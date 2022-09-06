@@ -68,12 +68,11 @@ class StreamItem extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               onTap: () {
-                // RouterCore.push(
-                //   PastStreamView.name,
-                //   context: context,
-                //   argument: streamModel,
-                // );
-                RouterCore.push(ExampleView.name);
+                RouterCore.push(
+                  PastStreamView.name,
+                  context: context,
+                  argument: streamModel,
+                );
               },
             ),
           ),
