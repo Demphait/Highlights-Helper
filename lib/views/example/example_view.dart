@@ -25,7 +25,7 @@ class _ExampleViewState extends State<ExampleView> {
       appBar: AppBar(
         title: Text(
           'some_text'.t,
-          style: AppTextStyles.title.white,
+          style: AppTextStyles.regular.white,
         ),
       ),
       body: Column(
