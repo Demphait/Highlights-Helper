@@ -11,17 +11,17 @@ import 'package:single_house/widgets/box_text.dart';
 class StreamItemLive extends StatefulWidget {
   const StreamItemLive({
     Key? key,
-    // required this.startDateTime,
+    required this.startDateTime,
   }) : super(key: key);
 
-  // final DateTime startDateTime;
+  final DateTime startDateTime;
 
   @override
   State<StreamItemLive> createState() => _StreamItemLiveState();
 }
 
 class _StreamItemLiveState extends State<StreamItemLive> {
-  // final streams = StreamsDB.getStreams();
+  final streams = StreamsDB.getStreams();
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +44,7 @@ class _StreamItemLiveState extends State<StreamItemLive> {
                 Row(
                   children: [
                     Text(
-                      '00:32:10',
-                      // DateTime.now().difference(widget.startDateTime).toHms(),
+                      DateTime.now().difference(widget.startDateTime).toHms(),
                       style: AppTextStyles.large.white,
                     ),
                     const Spacer(),
@@ -66,8 +65,7 @@ class _StreamItemLiveState extends State<StreamItemLive> {
                     ),
                     SizedBox(width: AppSpace.smd),
                     Text(
-                      // 'Stream ${streams.length + 1}',
-                      'Stream 5',
+                      'Stream ${streams.length + 1}',
                       style: AppTextStyles.mediumThin.white,
                     ),
                   ],

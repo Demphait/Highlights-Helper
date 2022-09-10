@@ -14,7 +14,7 @@ class GroupOfButtons extends StatefulWidget {
     required this.startDateTime,
     required this.highlightCallback,
     required this.afkCallBack,
-    // required this.addStreamCallBack,
+    required this.addStreamCallBack,
     this.isAfk = false,
   }) : super(key: key);
   final List<HighlightModel> highlightList;
@@ -22,7 +22,7 @@ class GroupOfButtons extends StatefulWidget {
   final DateTime startDateTime;
   final void Function() highlightCallback;
   final void Function() afkCallBack;
-  // final void Function() addStreamCallBack;
+  final void Function() addStreamCallBack;
 
   bool isAfk;
 
@@ -92,7 +92,7 @@ class _GroupOfButtonsState extends State<GroupOfButtons> {
                 child: const Text('Ні')),
             TextButton(
               onPressed: () {
-                // widget.addStreamCallBack();
+                widget.addStreamCallBack();
                 RouterCore.push(MainView.name);
               },
               child: const Text('Так'),

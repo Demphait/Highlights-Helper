@@ -31,8 +31,8 @@ class CurrentStreamView extends StatefulWidget {
 class _CurrentStreamViewState extends State<CurrentStreamView> {
   List<HighlightModel> highlightList = [];
   final CurrentStreamCubit _cubit = CurrentStreamCubit();
-  // final StreamCubit _streamCubit = StreamCubit();
-  // final streams = StreamsDB.getStreams();
+  final StreamCubit _streamCubit = StreamCubit();
+  final streams = StreamsDB.getStreams();
   bool isAfk = false;
 
   void callback() {
@@ -55,8 +55,7 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
           backgroundColor: AppColors.background,
           elevation: 0,
           centerTitle: true,
-          // title: Text('Stream ${streams.length + 1}'),
-          title: const Text('Stream 5'),
+          title: Text('Stream ${streams.length + 1}'),
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: AppSpace.md),
@@ -78,7 +77,7 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
                 isAfk: isAfk,
                 afkCallBack: () =>
                     _cubit.addAfk(startDateTime, highlightList, isAfk),
-                // addStreamCallBack: () => _streamCubit.addStream(startDateTime),
+                addStreamCallBack: () => _streamCubit.addStream(startDateTime),
               ),
               SizedBox(height: AppSpace.def),
               Padding(
