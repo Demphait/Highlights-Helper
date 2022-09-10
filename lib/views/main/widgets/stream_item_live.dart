@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:single_house/app/router/router_core.dart';
+import 'package:single_house/db/streams_db.dart';
 import 'package:single_house/styles/app_colors.dart';
 import 'package:single_house/styles/app_space.dart';
 import 'package:single_house/styles/app_text_styles.dart';
+import 'package:single_house/utils/duration_format.dart';
 import 'package:single_house/views/current_stream/current_stream_view.dart';
-import 'package:single_house/views/example/example_view.dart';
 import 'package:single_house/widgets/box_text.dart';
 
 class StreamItemLive extends StatefulWidget {
-  const StreamItemLive({Key? key}) : super(key: key);
+  const StreamItemLive({
+    Key? key,
+    // required this.startDateTime,
+  }) : super(key: key);
+
+  // final DateTime startDateTime;
 
   @override
   State<StreamItemLive> createState() => _StreamItemLiveState();
 }
 
 class _StreamItemLiveState extends State<StreamItemLive> {
-  DateTime startDateTime = DateTime.now();
+  // final streams = StreamsDB.getStreams();
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -38,6 +45,7 @@ class _StreamItemLiveState extends State<StreamItemLive> {
                   children: [
                     Text(
                       '00:32:10',
+                      // DateTime.now().difference(widget.startDateTime).toHms(),
                       style: AppTextStyles.large.white,
                     ),
                     const Spacer(),
@@ -58,6 +66,7 @@ class _StreamItemLiveState extends State<StreamItemLive> {
                     ),
                     SizedBox(width: AppSpace.smd),
                     Text(
+                      // 'Stream ${streams.length + 1}',
                       'Stream 5',
                       style: AppTextStyles.mediumThin.white,
                     ),
@@ -72,9 +81,8 @@ class _StreamItemLiveState extends State<StreamItemLive> {
             color: Colors.transparent,
             child: InkWell(
               onTap: () {
-                // RouterCore.push(CurrentStreamView.name,
-                //     argument: DateTime.now());
-                RouterCore.push(ExampleView.name);
+                RouterCore.push(CurrentStreamView.name,
+                    argument: DateTime.now());
               },
             ),
           ),
