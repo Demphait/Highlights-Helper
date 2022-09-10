@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:single_house/models/highlight_model.dart';
 import 'package:single_house/utils/duration_format.dart';
+import 'package:single_house/utils/sp_core.dart';
 
 class CurrentStreamCubit extends Cubit<HighlightModel> {
   CurrentStreamCubit()
@@ -18,13 +18,12 @@ class CurrentStreamCubit extends Cubit<HighlightModel> {
 
   Future<void> addAfk(DateTime startDateTime,
       List<HighlightModel> highlightList, bool isAfk) async {
-    final prefs = await SharedPreferences.getInstance();
-
     Future<void> buildAfk(bool isAfk) async {
-      String? startAfk = prefs.getString('startAfk');
-      if (startAfk == null) {
+      String? startAfk = SpCore.getStartAfk();
+      if (startAfk == '') {
         startAfk = DateTime.now().difference(startDateTime).toHms();
-        await prefs.setString('startAfk', startAfk);
+
+        SpCore.setStartAfk(startAfk);
       }
 
       if (isAfk == false) {
@@ -32,7 +31,8 @@ class CurrentStreamCubit extends Cubit<HighlightModel> {
 
         highlightList.insert(
             0, HighlightModel(time: '$startAfk - $endAfk', isAfk: true));
-        await prefs.remove('startAfk');
+
+        SpCore.delStartAfk();
       }
     }
 
