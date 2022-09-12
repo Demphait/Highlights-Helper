@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:single_house/models/stream_model.dart';
+import 'package:single_house/views/current_stream/current_stream_view.dart';
 import 'package:single_house/views/example/example_view.dart';
 import 'package:single_house/views/main/main_view.dart';
 import 'package:single_house/views/past_stream/past_stream_view.dart';
@@ -23,5 +24,11 @@ abstract class RouterList {
           }
           return ExampleView.route();
         },
+        CurrentStreamView.name: (arg) {
+          if (arg is DateTime) {
+            return CurrentStreamView.route(arg);
+          }
+          return ExampleView.route();
+        }
       };
 }

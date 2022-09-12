@@ -4,18 +4,18 @@ import 'package:single_house/styles/app_colors.dart';
 import 'package:single_house/styles/app_space.dart';
 import 'package:single_house/styles/app_text_styles.dart';
 import 'package:single_house/views/current_stream/current_stream_view.dart';
-import 'package:single_house/views/example/example_view.dart';
 import 'package:single_house/widgets/box_text.dart';
 
 class StreamItemLive extends StatefulWidget {
-  const StreamItemLive({Key? key}) : super(key: key);
+  const StreamItemLive({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<StreamItemLive> createState() => _StreamItemLiveState();
 }
 
 class _StreamItemLiveState extends State<StreamItemLive> {
-  DateTime startDateTime = DateTime.now();
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -72,9 +72,8 @@ class _StreamItemLiveState extends State<StreamItemLive> {
             color: Colors.transparent,
             child: InkWell(
               onTap: () {
-                // RouterCore.push(CurrentStreamView.name,
-                //     argument: DateTime.now());
-                RouterCore.push(ExampleView.name);
+                RouterCore.push(CurrentStreamView.name,
+                    argument: DateTime.now());
               },
             ),
           ),

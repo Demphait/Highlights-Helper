@@ -10,4 +10,5 @@ abstract class AppColors {
   static Color get darkGrey => const Color(0xFF292639);
   static Color get pink => const Color(0xFFFD5B71);
   static Color get red => const Color(0xFF8F231C);
+  static Color get purple => const Color(0xFF1B143F);
 }
