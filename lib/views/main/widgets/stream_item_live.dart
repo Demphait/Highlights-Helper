@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:single_house/app/router/router_core.dart';
-import 'package:single_house/db/streams_db.dart';
 import 'package:single_house/styles/app_colors.dart';
 import 'package:single_house/styles/app_space.dart';
 import 'package:single_house/styles/app_text_styles.dart';
-import 'package:single_house/utils/duration_format.dart';
 import 'package:single_house/views/current_stream/current_stream_view.dart';
 import 'package:single_house/widgets/box_text.dart';
 
