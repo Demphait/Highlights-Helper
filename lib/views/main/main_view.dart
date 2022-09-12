@@ -4,7 +4,7 @@ import 'package:single_house/models/stream_model.dart';
 import 'package:single_house/styles/app_colors.dart';
 import 'package:single_house/styles/app_space.dart';
 import 'package:single_house/styles/app_text_styles.dart';
-import 'package:single_house/views/current_stream/current_stream_view.dart';
+import 'package:single_house/views/example/example_view.dart';
 import 'package:single_house/views/main/widgets/stream_item.dart';
 import 'package:single_house/views/main/widgets/stream_item_live.dart';
 
@@ -48,8 +48,9 @@ class MainView extends StatelessWidget {
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
                         onPressed: () {
-                          RouterCore.push(CurrentStreamView.name,
-                              argument: DateTime.now());
+                          RouterCore.push(
+                            ExampleView.name,
+                          );
                         },
                         icon: const Icon(Icons.add),
                         color: AppColors.white,
