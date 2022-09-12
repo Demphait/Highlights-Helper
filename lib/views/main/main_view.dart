@@ -65,7 +65,7 @@ class _MainViewState extends State<MainView> {
                     ),
                   ),
                   // StreamItemLive(startDateTime: DateTime.now()),
-                  StreamItemLive(),
+                  const StreamItemLive(),
                   SizedBox(height: AppSpace.md),
                   BlocBuilder<StreamCubit, StreamState>(
                     builder: (context, state) {
