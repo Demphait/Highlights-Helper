@@ -1,41 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'stream_model.dart';
+part of 'highlight_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class StreamModelAdapter extends TypeAdapter<StreamModel> {
+class HighlightModelAdapter extends TypeAdapter<HighlightModel> {
   @override
-  final int typeId = 0;
+  final int typeId = 1;
 
   @override
-  StreamModel read(BinaryReader reader) {
+  HighlightModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return StreamModel(
-      name: fields[0] as String,
-      date: fields[1] as String,
-      time: fields[2] as String,
-      highlights: (fields[3] as List).cast<HighlightModel>(),
+    return HighlightModel(
+      time: fields[0] as String,
+      isAfk: fields[1] as bool,
     );
   }
 
   @override
-  void write(BinaryWriter writer, StreamModel obj) {
+  void write(BinaryWriter writer, HighlightModel obj) {
     writer
-      ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.name)
-      ..writeByte(1)
-      ..write(obj.date)
       ..writeByte(2)
+      ..writeByte(0)
       ..write(obj.time)
-      ..writeByte(3)
-      ..write(obj.highlights);
+      ..writeByte(1)
+      ..write(obj.isAfk);
   }
 
   @override
@@ -44,7 +38,7 @@ class StreamModelAdapter extends TypeAdapter<StreamModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is StreamModelAdapter &&
+      other is HighlightModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

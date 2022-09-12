@@ -92,7 +92,7 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
                   afkCallBack: () =>
                       _cubit.addAfk(startDateTime, highlightList, isAfk),
                   addStreamCallBack: () =>
-                      _streamCubit.addStream(startDateTime),
+                      _streamCubit.addStream(startDateTime, highlightList),
                 ),
                 SizedBox(height: AppSpace.def),
                 Padding(

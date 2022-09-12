@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:single_house/models/highlight_model.dart';
 
 part 'stream_model.g.dart';
 
@@ -10,10 +11,13 @@ class StreamModel extends HiveObject {
   final String date;
   @HiveField(2)
   final String time;
+  @HiveField(3)
+  final List<HighlightModel> highlights;
 
   StreamModel({
     required this.name,
     required this.date,
     required this.time,
+    required this.highlights,
   });
 }

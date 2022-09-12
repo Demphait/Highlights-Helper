@@ -51,7 +51,7 @@ class _PastStreamViewState extends State<PastStreamView> {
     String durationStream = endStream.difference(startStream).toHms();
 
     return BlocProvider(
-      create: (context) => _cubit..fetch(),
+      create: (context) => _cubit..fetch(widget.streamModel),
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
