@@ -25,67 +25,70 @@ class _StreamItemLiveState extends State<StreamItemLive> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: 112,
-          decoration: BoxDecoration(
-            color: AppColors.darkGrey,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(12),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: AppSpace.sm),
+      child: Stack(
+        children: [
+          Container(
+            height: 112,
+            decoration: BoxDecoration(
+              color: AppColors.darkGrey,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(12),
+              ),
             ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: AppSpace.def, vertical: AppSpace.md),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      DateTime.now().difference(widget.startDateTime).toHms(),
-                      style: AppTextStyles.large.white,
-                    ),
-                    const Spacer(),
-                    TextBox(
-                        text: 'Streaming',
-                        textStyle: AppTextStyles.secondary.pink),
-                  ],
-                ),
-                SizedBox(height: AppSpace.def),
-                Row(
-                  children: [
-                    SizedBox(
-                      child: const CircularProgressIndicator(
-                        strokeWidth: 2,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: AppSpace.def, vertical: AppSpace.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        DateTime.now().difference(widget.startDateTime).toHms(),
+                        style: AppTextStyles.large.white,
                       ),
-                      height: AppSpace.smd,
-                      width: AppSpace.smd,
-                    ),
-                    SizedBox(width: AppSpace.smd),
-                    Text(
-                      'Stream ${streams.length + 1}',
-                      style: AppTextStyles.mediumThin.white,
-                    ),
-                  ],
-                ),
-              ],
+                      const Spacer(),
+                      TextBox(
+                          text: 'Streaming',
+                          textStyle: AppTextStyles.secondary.pink),
+                    ],
+                  ),
+                  SizedBox(height: AppSpace.def),
+                  Row(
+                    children: [
+                      SizedBox(
+                        child: const CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                        height: AppSpace.smd,
+                        width: AppSpace.smd,
+                      ),
+                      SizedBox(width: AppSpace.smd),
+                      Text(
+                        'Stream ${streams.length + 1}',
+                        style: AppTextStyles.mediumThin.white,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        Positioned.fill(
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () {
-                RouterCore.push(CurrentStreamView.name,
-                    argument: DateTime.now());
-              },
+          Positioned.fill(
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  RouterCore.push(CurrentStreamView.name,
+                      argument: DateTime.now());
+                },
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

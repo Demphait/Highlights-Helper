@@ -36,7 +36,7 @@ class _MainViewState extends State<MainView> {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSpace.md),
+              padding: EdgeInsets.symmetric(horizontal: AppSpace.sm),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -70,7 +70,10 @@ class _MainViewState extends State<MainView> {
                     builder: (context, state) {
                       return LoadingWrapper(
                         isLoading: state.status == StreamStatus.loading,
-                        child: _buildChats(state),
+                        child: _buildChats(
+                          state,
+                          _cubit,
+                        ),
                       );
                     },
                   ),
@@ -84,7 +87,7 @@ class _MainViewState extends State<MainView> {
   }
 }
 
-Widget _buildChats(StreamState state) {
+Widget _buildChats(StreamState state, StreamCubit cubit) {
   if (state.status != StreamStatus.loading && state.streams.isEmpty) {
     return const Center(child: Text('Streams are not found'));
   }
@@ -98,6 +101,7 @@ Widget _buildChats(StreamState state) {
         children: [
           StreamItem(
             streamModel: state.streams[index],
+            deleteStream: () => cubit.deleteStream(index),
           ),
           SizedBox(height: AppSpace.md),
         ],
