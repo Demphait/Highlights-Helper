@@ -4,7 +4,6 @@ import 'package:single_house/models/stream_model.dart';
 import 'package:single_house/styles/app_colors.dart';
 import 'package:single_house/styles/app_space.dart';
 import 'package:single_house/styles/app_text_styles.dart';
-import 'package:single_house/views/example/example_view.dart';
 import 'package:single_house/views/past_stream/past_stream_view.dart';
 
 class StreamItem extends StatelessWidget {
@@ -68,12 +67,11 @@ class StreamItem extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               onTap: () {
-                // RouterCore.push(
-                //   PastStreamView.name,
-                //   context: context,
-                //   argument: streamModel,
-                // );
-                RouterCore.push(ExampleView.name);
+                RouterCore.push(
+                  PastStreamView.name,
+                  context: context,
+                  argument: streamModel,
+                );
               },
             ),
           ),
