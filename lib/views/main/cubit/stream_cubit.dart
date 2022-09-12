@@ -35,6 +35,12 @@ class StreamCubit extends Cubit<StreamState> {
     );
   }
 
+  Future<void> deleteStream(int index) async {
+    StreamsDB.deleteStream(index);
+    final streams = StreamsDB.getStreams();
+    emit(state.copyWith(streams: streams));
+  }
+
   Future<void> fetch() async {
     emit(state.copyWith(status: StreamStatus.loading));
     await Future.wait([

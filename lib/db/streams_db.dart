@@ -19,4 +19,8 @@ class StreamsDB {
     _box.add(stream);
     return _box.values.toList();
   }
+
+  static void deleteStream(int index) {
+    _box.deleteAt(index);
+  }
 }
