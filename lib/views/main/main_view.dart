@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:single_house/app/router/index.dart';
+import 'package:single_house/models/stream_model.dart';
 import 'package:single_house/styles/app_colors.dart';
 import 'package:single_house/styles/app_space.dart';
 import 'package:single_house/styles/app_text_styles.dart';
@@ -8,6 +9,7 @@ import 'package:single_house/views/current_stream/current_stream_view.dart';
 import 'package:single_house/views/main/cubit/stream_cubit.dart';
 import 'package:single_house/views/main/widgets/stream_item.dart';
 import 'package:single_house/views/main/widgets/stream_item_live.dart';
+import 'package:single_house/widgets/dialog.dart';
 import 'package:single_house/widgets/loading_wrapper.dart';
 
 class MainView extends StatefulWidget {
@@ -26,6 +28,7 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   final StreamCubit _cubit = StreamCubit();
+  final TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +53,37 @@ class _MainViewState extends State<MainView> {
                         ),
                         const Spacer(),
                         IconButton(
-                          splashRadius: 20,
+                          splashRadius: 18,
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            RouterCore.push(CurrentStreamView.name,
-                                argument: DateTime.now());
+                            showTextField(
+                              context: context,
+                              title: 'Введіть назву стріма',
+                              controller: textEditingController,
+                              callbackYes: () {
+                                if (textEditingController.text != '') {
+                                  RouterCore.push(
+                                    CurrentStreamView.name,
+                                    argument: StreamModel(
+                                      name: textEditingController.text,
+                                      date: DateTime.now().toString(),
+                                      time: DateTime.now().toString(),
+                                      highlights: [],
+                                    ),
+                                  );
+                                } else {
+                                  RouterCore.pop();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content:
+                                          const Text('Введіть назву стріма'),
+                                      backgroundColor: AppColors.red,
+                                    ),
+                                  );
+                                }
+                              },
+                            );
                           },
                           icon: const Icon(Icons.add),
                           color: AppColors.white,

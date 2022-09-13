@@ -15,10 +15,8 @@ class StreamCubit extends Cubit<StreamState> {
     emit(state.copyWith(streams: streams));
   }
 
-  Future<void> addStream(
-      DateTime timeStartStream, List<HighlightModel> highlights) async {
-    final streams = StreamsDB.getStreams();
-
+  Future<void> addStream(DateTime timeStartStream,
+      List<HighlightModel> highlights, String title) async {
     final Duration durationStream = DateTime.now().difference(timeStartStream);
     final DateTime timeEndStream = timeStartStream.add(durationStream);
 
@@ -27,7 +25,7 @@ class StreamCubit extends Cubit<StreamState> {
 
     StreamsDB.addStream(
       StreamModel(
-        name: 'Stream ${streams.length + 1}',
+        name: title,
         date: DateFormat('yyyy-MM-dd').format(timeStartStream),
         time: '$startStream - $endStream',
         highlights: highlights,

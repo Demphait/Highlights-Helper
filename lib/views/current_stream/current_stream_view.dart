@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:single_house/app/router/router_core.dart';
-import 'package:single_house/db/streams_db.dart';
 import 'package:single_house/models/highlight_model.dart';
+import 'package:single_house/models/stream_model.dart';
 import 'package:single_house/styles/app_colors.dart';
 import 'package:single_house/styles/app_space.dart';
 import 'package:single_house/styles/app_text_styles.dart';
@@ -15,15 +15,15 @@ import 'package:single_house/views/past_stream/widgets/highlight_item.dart';
 
 class CurrentStreamView extends StatefulWidget {
   static const String name = 'CurrentStreamView';
-  static PageRoute route(DateTime startDateTime) => RouterCore.createRoute(
-        CurrentStreamView(startDateTime: startDateTime),
+  static PageRoute route(StreamModel streamModel) => RouterCore.createRoute(
+        CurrentStreamView(streamModel: streamModel),
       );
 
   const CurrentStreamView({
     Key? key,
-    required this.startDateTime,
+    required this.streamModel,
   }) : super(key: key);
-  final DateTime startDateTime;
+  final StreamModel streamModel;
 
   @override
   State<CurrentStreamView> createState() => _CurrentStreamViewState();
@@ -33,7 +33,7 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
   List<HighlightModel> highlightList = [];
   final CurrentStreamCubit _cubit = CurrentStreamCubit();
   final StreamCubit _streamCubit = StreamCubit();
-  final streams = StreamsDB.getStreams();
+
   bool isAfk = false;
 
   void callback() {
@@ -63,8 +63,13 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
             backgroundColor: AppColors.background,
             elevation: 0,
             centerTitle: true,
-            title: Text('Stream ${streams.length + 1}'),
+            title: Text(
+              widget.streamModel.name,
+              maxLines: 1,
+              overflow: TextOverflow.clip,
+            ),
             leading: IconButton(
+                splashRadius: 18,
                 onPressed: () async {
                   RouterCore.pop();
                   SpCore.delStartAfk();
@@ -91,8 +96,8 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
                   isAfk: isAfk,
                   afkCallBack: () =>
                       _cubit.addAfk(startDateTime, highlightList, isAfk),
-                  addStreamCallBack: () =>
-                      _streamCubit.addStream(startDateTime, highlightList),
+                  addStreamCallBack: () => _streamCubit.addStream(
+                      startDateTime, highlightList, widget.streamModel.name),
                 ),
                 SizedBox(height: AppSpace.def),
                 Padding(
@@ -129,7 +134,6 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
             children: [
               HighlightItem(
                 highlightModel: highlightList[index],
-                // deleteHighlight: () => highlightList.removeAt(index),
                 deleteHighlight: () =>
                     cubit.deleteHighlight(highlightList, index),
               ),
