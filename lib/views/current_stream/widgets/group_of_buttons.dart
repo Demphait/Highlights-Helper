@@ -41,6 +41,7 @@ class _GroupOfButtonsState extends State<GroupOfButtons> {
       children: [
         Row(
           children: [
+            SizedBox(width: AppSpace.sm),
             ElevatedButton(
               onPressed: () {
                 widget.highlightCallback();

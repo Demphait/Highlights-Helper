@@ -62,7 +62,7 @@ class _PastStreamViewState extends State<PastStreamView> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppSpace.md),
+            padding: EdgeInsets.symmetric(horizontal: AppSpace.sm),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -86,7 +86,7 @@ class _PastStreamViewState extends State<PastStreamView> {
                   builder: (context, state) {
                     return LoadingWrapper(
                       isLoading: state.status == PastStreamStatus.loading,
-                      child: buildHighligts(state),
+                      child: buildHighligts(state, _cubit, widget.streamModel),
                     );
                   },
                 )
@@ -99,7 +99,8 @@ class _PastStreamViewState extends State<PastStreamView> {
   }
 }
 
-Widget buildHighligts(PastStreamState state) {
+Widget buildHighligts(
+    PastStreamState state, PastStreamCubit cubit, StreamModel stream) {
   return ListView.builder(
     shrinkWrap: true,
     physics: const NeverScrollableScrollPhysics(),
@@ -109,6 +110,7 @@ Widget buildHighligts(PastStreamState state) {
         children: [
           HighlightItem(
             highlightModel: state.highlights[index],
+            deleteHighlight: () => cubit.deleteHighlight(stream, index),
           ),
           SizedBox(height: AppSpace.md),
         ],

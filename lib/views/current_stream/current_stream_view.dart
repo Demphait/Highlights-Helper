@@ -72,7 +72,7 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
                 icon: const Icon(Icons.arrow_back)),
           ),
           body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppSpace.md),
+            padding: EdgeInsets.symmetric(horizontal: AppSpace.sm),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -105,7 +105,7 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
                 SizedBox(height: AppSpace.md),
                 BlocBuilder<CurrentStreamCubit, HighlightModel>(
                     builder: (context, state) {
-                  return buildHighlightList(highlightList);
+                  return buildHighlightList(highlightList, _cubit);
                 }),
               ],
             ),
@@ -119,7 +119,8 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
     );
   }
 
-  Expanded buildHighlightList(List<HighlightModel> highlightList) {
+  Expanded buildHighlightList(
+      List<HighlightModel> highlightList, CurrentStreamCubit cubit) {
     return Expanded(
       child: ListView.builder(
         itemCount: highlightList.length,
@@ -128,6 +129,9 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
             children: [
               HighlightItem(
                 highlightModel: highlightList[index],
+                // deleteHighlight: () => highlightList.removeAt(index),
+                deleteHighlight: () =>
+                    cubit.deleteHighlight(highlightList, index),
               ),
               SizedBox(height: AppSpace.md),
             ],
