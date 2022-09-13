@@ -85,7 +85,8 @@ class _PastStreamViewState extends State<PastStreamView> {
                   builder: (context, state) {
                     return LoadingWrapper(
                       isLoading: state.status == PastStreamStatus.loading,
-                      child: buildHighligts(state, _cubit, widget.streamModel),
+                      child: _buildHighligts(
+                          state, _cubit, widget.streamModel, context),
                     );
                   },
                 )
@@ -98,8 +99,18 @@ class _PastStreamViewState extends State<PastStreamView> {
   }
 }
 
-Widget buildHighligts(
-    PastStreamState state, PastStreamCubit cubit, StreamModel stream) {
+Widget _buildHighligts(PastStreamState state, PastStreamCubit cubit,
+    StreamModel stream, BuildContext context) {
+  if (state.status != PastStreamStatus.loading && state.highlights.isEmpty) {
+    return Center(
+        child: Padding(
+      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 4),
+      child: Text(
+        'Highlights are not found',
+        style: TextStyle(color: AppColors.white, fontSize: 18),
+      ),
+    ));
+  }
   return ListView.builder(
     shrinkWrap: true,
     physics: const NeverScrollableScrollPhysics(),

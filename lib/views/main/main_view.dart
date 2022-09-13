@@ -62,7 +62,7 @@ class _MainViewState extends State<MainView> {
                               title: 'Введіть назву стріма',
                               controller: textEditingController,
                               callbackYes: () {
-                                if (textEditingController.text != '') {
+                                if (textEditingController.text.isNotEmpty) {
                                   RouterCore.push(
                                     CurrentStreamView.name,
                                     argument: StreamModel(
@@ -98,10 +98,7 @@ class _MainViewState extends State<MainView> {
                     builder: (context, state) {
                       return LoadingWrapper(
                         isLoading: state.status == StreamStatus.loading,
-                        child: _buildChats(
-                          state,
-                          _cubit,
-                        ),
+                        child: _buildStreams(state, _cubit),
                       );
                     },
                   ),
@@ -115,9 +112,13 @@ class _MainViewState extends State<MainView> {
   }
 }
 
-Widget _buildChats(StreamState state, StreamCubit cubit) {
+Widget _buildStreams(StreamState state, StreamCubit cubit) {
   if (state.status != StreamStatus.loading && state.streams.isEmpty) {
-    return const Center(child: Text('Streams are not found'));
+    return Center(
+        child: Text(
+      'Streams are not found',
+      style: TextStyle(color: AppColors.white, fontSize: 18),
+    ));
   }
   return ListView.builder(
     reverse: true,
