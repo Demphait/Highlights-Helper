@@ -23,4 +23,9 @@ class StreamsDB {
   static void deleteStream(int index) {
     _box.deleteAt(index);
   }
+
+  static void deleteHighlight(StreamModel stream, int indexOfList) {
+    stream.highlights.removeAt(indexOfList);
+    _box.put(stream.key, stream);
+  }
 }
