@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:single_house/app/router/index.dart';
+import 'package:single_house/db/streams_db.dart';
 import 'package:single_house/models/stream_model.dart';
 import 'package:single_house/styles/app_colors.dart';
 import 'package:single_house/styles/app_space.dart';
@@ -29,6 +30,7 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   final StreamCubit _cubit = StreamCubit();
   final TextEditingController textEditingController = TextEditingController();
+  final liveStream = StreamsDB.getLivedStreams();
 
   @override
   Widget build(BuildContext context) {
@@ -52,47 +54,55 @@ class _MainViewState extends State<MainView> {
                           style: AppTextStyles.regular.white,
                         ),
                         const Spacer(),
-                        IconButton(
-                          splashRadius: 18,
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                          onPressed: () {
-                            showTextField(
-                              context: context,
-                              title: 'Введіть назву стріма',
-                              controller: textEditingController,
-                              callbackYes: () {
-                                if (textEditingController.text.isNotEmpty) {
-                                  RouterCore.push(
-                                    CurrentStreamView.name,
-                                    argument: StreamModel(
-                                      name: textEditingController.text,
-                                      date: DateTime.now().toString(),
-                                      time: DateTime.now().toString(),
-                                      highlights: [],
-                                    ),
+                        liveStream == null
+                            ? IconButton(
+                                splashRadius: 18,
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                onPressed: () {
+                                  showTextField(
+                                    context: context,
+                                    title: 'Введіть назву стріма',
+                                    controller: textEditingController,
+                                    callbackYes: () {
+                                      if (textEditingController
+                                          .text.isNotEmpty) {
+                                        RouterCore.push(
+                                          CurrentStreamView.name,
+                                          argument: StreamModel(
+                                            name: textEditingController.text,
+                                            date: DateTime.now().toString(),
+                                            time: DateTime.now().toString(),
+                                            highlights: [],
+                                          ),
+                                        );
+                                      } else {
+                                        RouterCore.pop();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: const Text(
+                                                'Введіть назву стріма'),
+                                            backgroundColor: AppColors.red,
+                                          ),
+                                        );
+                                      }
+                                    },
                                   );
-                                } else {
-                                  RouterCore.pop();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content:
-                                          const Text('Введіть назву стріма'),
-                                      backgroundColor: AppColors.red,
-                                    ),
-                                  );
-                                }
-                              },
-                            );
-                          },
-                          icon: const Icon(Icons.add),
-                          color: AppColors.white,
-                          iconSize: 28,
-                        ),
+                                },
+                                icon: const Icon(Icons.add),
+                                color: AppColors.white,
+                                iconSize: 28,
+                              )
+                            : const SizedBox(height: 0),
                       ],
                     ),
                   ),
-                  StreamItemLive(startDateTime: DateTime.now()),
+                  liveStream != null
+                      ? StreamItemLive(
+                          streamModel: liveStream!,
+                        )
+                      : const SizedBox(height: 0),
                   SizedBox(height: AppSpace.md),
                   BlocBuilder<StreamCubit, StreamState>(
                     builder: (context, state) {

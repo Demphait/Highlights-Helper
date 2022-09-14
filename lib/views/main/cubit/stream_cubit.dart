@@ -31,6 +31,30 @@ class StreamCubit extends Cubit<StreamState> {
         highlights: highlights,
       ),
     );
+
+    StreamsDB.deleteLiveStream();
+  }
+
+  Future<void> addLiveStream(
+    DateTime timeStartStream,
+    List<HighlightModel> highlights,
+    String title,
+    StreamModel? streamModel,
+  ) async {
+    if (streamModel != null) {
+      StreamsDB.deleteLiveStream();
+    }
+
+    StreamsDB.addLiveStream(
+      StreamModel(
+        name: title,
+        date: DateFormat('yyyy-MM-dd').format(timeStartStream),
+        time: timeStartStream.toString(),
+        highlights: highlights,
+      ),
+    );
+
+    emit(state.copyWith(status: StreamStatus.ready));
   }
 
   Future<void> deleteStream(int index) async {

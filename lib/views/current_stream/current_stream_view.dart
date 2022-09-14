@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:single_house/app/router/router_core.dart';
+import 'package:single_house/db/streams_db.dart';
 import 'package:single_house/models/highlight_model.dart';
 import 'package:single_house/models/stream_model.dart';
 import 'package:single_house/styles/app_colors.dart';
@@ -10,6 +12,8 @@ import 'package:single_house/utils/sp_core.dart';
 import 'package:single_house/views/current_stream/cubit/current_stream_cubit.dart';
 import 'package:single_house/views/current_stream/widgets/group_of_buttons.dart';
 import 'package:single_house/views/main/cubit/stream_cubit.dart';
+import 'package:single_house/views/main/main_view.dart';
+import 'package:single_house/widgets/substring.dart';
 import 'package:single_house/widgets/timer.dart';
 import 'package:single_house/views/past_stream/widgets/highlight_item.dart';
 
@@ -30,7 +34,7 @@ class CurrentStreamView extends StatefulWidget {
 }
 
 class _CurrentStreamViewState extends State<CurrentStreamView> {
-  List<HighlightModel> highlightList = [];
+  List<HighlightModel> get highlightList => widget.streamModel.highlights;
   final CurrentStreamCubit _cubit = CurrentStreamCubit();
   final StreamCubit _streamCubit = StreamCubit();
 
@@ -53,7 +57,10 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime startDateTime = DateTime.now();
+    String streamTime = widget.streamModel.time;
+    String firstPart = substring(streamTime, start: 0);
+    DateTime startStream = DateFormat("yy-MM-dd HH:mm:ss").parse(firstPart);
+
     return BlocProvider(
       create: (context) => _cubit,
       child: WillPopScope(
@@ -71,8 +78,14 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
             leading: IconButton(
                 splashRadius: 18,
                 onPressed: () async {
-                  RouterCore.pop();
+                  _streamCubit.addLiveStream(
+                    startStream,
+                    widget.streamModel.highlights,
+                    widget.streamModel.name,
+                    StreamsDB.getLivedStreams(),
+                  );
                   SpCore.delStartAfk();
+                  RouterCore.push(MainView.name);
                 },
                 icon: const Icon(Icons.arrow_back)),
           ),
@@ -83,21 +96,21 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
               children: [
                 SizedBox(height: AppSpace.xlg),
                 TimerWidget(
-                  startDateTime: DateTime.now(),
+                  startDateTime: startStream,
                   textStyle: AppTextStyles.veryLarge.white,
                 ),
                 SizedBox(height: AppSpace.def),
                 GroupOfButtons(
                   highlightList: highlightList,
                   callback: callback,
-                  startDateTime: startDateTime,
+                  startDateTime: startStream,
                   highlightCallback: () =>
-                      _cubit.addHighlightMoment(startDateTime, highlightList),
+                      _cubit.addHighlightMoment(startStream, highlightList),
                   isAfk: isAfk,
                   afkCallBack: () =>
-                      _cubit.addAfk(startDateTime, highlightList, isAfk),
+                      _cubit.addAfk(startStream, highlightList, isAfk),
                   addStreamCallBack: () => _streamCubit.addStream(
-                      startDateTime, highlightList, widget.streamModel.name),
+                      startStream, highlightList, widget.streamModel.name),
                 ),
                 SizedBox(height: AppSpace.def),
                 Padding(
@@ -117,8 +130,15 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
           ),
         ),
         onWillPop: () async {
+          _streamCubit.addLiveStream(
+            startStream,
+            widget.streamModel.highlights,
+            widget.streamModel.name,
+            StreamsDB.getLivedStreams(),
+          );
           SpCore.delStartAfk();
-          return true;
+          RouterCore.push(MainView.name);
+          return false;
         },
       ),
     );
