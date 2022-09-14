@@ -46,7 +46,8 @@ class _MainViewState extends State<MainView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: AppSpace.smd),
+                    padding: EdgeInsets.symmetric(
+                        vertical: AppSpace.smd, horizontal: AppSpace.md),
                     child: Row(
                       children: [
                         Text(
@@ -62,7 +63,7 @@ class _MainViewState extends State<MainView> {
                                 onPressed: () {
                                   showTextField(
                                     context: context,
-                                    title: 'Введіть назву стріма',
+                                    title: 'Enter a stream name',
                                     controller: textEditingController,
                                     callbackYes: () {
                                       if (textEditingController
@@ -82,7 +83,8 @@ class _MainViewState extends State<MainView> {
                                             .showSnackBar(
                                           SnackBar(
                                             content: const Text(
-                                                'Введіть назву стріма'),
+                                              'Enter a stream name',
+                                            ),
                                             backgroundColor: AppColors.red,
                                           ),
                                         );
@@ -108,7 +110,7 @@ class _MainViewState extends State<MainView> {
                     builder: (context, state) {
                       return LoadingWrapper(
                         isLoading: state.status == StreamStatus.loading,
-                        child: _buildStreams(state, _cubit),
+                        child: _buildStreams(state, _cubit, context),
                       );
                     },
                   ),
@@ -122,12 +124,16 @@ class _MainViewState extends State<MainView> {
   }
 }
 
-Widget _buildStreams(StreamState state, StreamCubit cubit) {
+Widget _buildStreams(
+    StreamState state, StreamCubit cubit, BuildContext context) {
   if (state.status != StreamStatus.loading && state.streams.isEmpty) {
     return Center(
-        child: Text(
-      'Streams are not found',
-      style: TextStyle(color: AppColors.white, fontSize: 18),
+        child: Padding(
+      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 3),
+      child: Text(
+        'Streams not found',
+        style: TextStyle(color: AppColors.white, fontSize: 18),
+      ),
     ));
   }
   return ListView.builder(

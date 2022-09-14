@@ -116,7 +116,7 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
                 Padding(
                   padding: EdgeInsets.only(left: AppSpace.sm),
                   child: Text(
-                    'Помітки',
+                    'Highlights:',
                     style: AppTextStyles.middle.white,
                   ),
                 ),

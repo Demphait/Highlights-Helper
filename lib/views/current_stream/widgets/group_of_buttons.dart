@@ -46,7 +46,7 @@ class _GroupOfButtonsState extends State<GroupOfButtons> {
               onPressed: () {
                 widget.highlightCallback();
               },
-              child: const Text('Крутий момент'),
+              child: const Text('Highlight moment'),
               style: AppButtonStyles.secondaryButton(AppColors.purple),
             ),
             SizedBox(width: AppSpace.smd),
@@ -59,9 +59,7 @@ class _GroupOfButtonsState extends State<GroupOfButtons> {
 
                 widget.afkCallBack();
               },
-              child: widget.isAfk
-                  ? const Text('Повернутися')
-                  : const Text('Відійти'),
+              child: widget.isAfk ? const Text('Come Back') : const Text('AFK'),
               style: AppButtonStyles.secondaryButton(
                 widget.isAfk ? AppColors.green : AppColors.purple,
               ),
@@ -73,13 +71,13 @@ class _GroupOfButtonsState extends State<GroupOfButtons> {
           onPressed: () {
             showMaterialDialog(
                 context: context,
-                title: 'Ви дійсно хочете закінчити стрім?',
+                title: 'Do you really want to end the stream?',
                 callbackYes: () {
                   widget.addStreamCallBack();
                   RouterCore.push(MainView.name);
                 });
           },
-          child: const Text('Закінчити стрім'),
+          child: const Text('End stream'),
           style: AppButtonStyles.primaryRedButton,
         ),
       ],

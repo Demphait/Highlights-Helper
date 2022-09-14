@@ -20,12 +20,12 @@ void showMaterialDialog({
                 }
                 RouterCore.pop();
               },
-              child: const Text('Ні')),
+              child: const Text('No')),
           TextButton(
             onPressed: () {
               callbackYes();
             },
-            child: const Text('Так'),
+            child: const Text('Yes'),
           )
         ],
       );
@@ -61,12 +61,12 @@ void showTextField({
                 }
                 RouterCore.pop();
               },
-              child: const Text('Назад')),
+              child: const Text('Back')),
           TextButton(
             onPressed: () {
               callbackYes();
             },
-            child: const Text('Продовжити'),
+            child: const Text('Continue'),
           )
         ],
       );

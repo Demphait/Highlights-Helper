@@ -76,7 +76,7 @@ class _PastStreamViewState extends State<PastStreamView> {
                 Padding(
                   padding: EdgeInsets.only(left: AppSpace.sm),
                   child: Text(
-                    'Помітки',
+                    'Highlights:',
                     style: AppTextStyles.middle.white,
                   ),
                 ),
@@ -106,7 +106,7 @@ Widget _buildHighligts(PastStreamState state, PastStreamCubit cubit,
         child: Padding(
       padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 4),
       child: Text(
-        'Highlights are not found',
+        'Highlights not found',
         style: TextStyle(color: AppColors.white, fontSize: 18),
       ),
     ));
