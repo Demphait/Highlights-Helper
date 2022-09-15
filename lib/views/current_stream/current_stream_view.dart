@@ -38,15 +38,15 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
   final CurrentStreamCubit _cubit = CurrentStreamCubit();
   final StreamCubit _streamCubit = StreamCubit();
 
-  bool isAfk = false;
+  bool isAfk = SpCore.getBoolAfk();
 
   void callback() {
     isAfk = !isAfk;
+    SpCore.setBoolAfk(isAfk);
   }
 
   @override
   void dispose() {
-    SpCore.delStartAfk();
     super.dispose();
   }
 
@@ -84,7 +84,7 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
                     widget.streamModel.name,
                     StreamsDB.getLivedStreams(),
                   );
-                  SpCore.delStartAfk();
+
                   RouterCore.push(MainView.name);
                 },
                 icon: const Icon(Icons.arrow_back)),
@@ -101,17 +101,33 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
                 ),
                 SizedBox(height: AppSpace.def),
                 GroupOfButtons(
-                  highlightList: highlightList,
-                  callback: callback,
-                  startDateTime: startStream,
-                  highlightCallback: () =>
-                      _cubit.addHighlightMoment(startStream, highlightList),
-                  isAfk: isAfk,
-                  afkCallBack: () =>
-                      _cubit.addAfk(startStream, highlightList, isAfk),
-                  addStreamCallBack: () => _streamCubit.addStream(
-                      startStream, highlightList, widget.streamModel.name),
-                ),
+                    highlightList: highlightList,
+                    callback: callback,
+                    highlightCallback: () {
+                      _cubit.addHighlightMoment(startStream, highlightList);
+                      _streamCubit.addLiveStream(
+                        startStream,
+                        widget.streamModel.highlights,
+                        widget.streamModel.name,
+                        StreamsDB.getLivedStreams(),
+                      );
+                    },
+                    isAfk: isAfk,
+                    afkCallBack: () {
+                      _cubit.addAfk(startStream, highlightList, isAfk);
+                      _streamCubit.addLiveStream(
+                        startStream,
+                        widget.streamModel.highlights,
+                        widget.streamModel.name,
+                        StreamsDB.getLivedStreams(),
+                      );
+                    },
+                    addStreamCallBack: () {
+                      _streamCubit.addStream(
+                          startStream, highlightList, widget.streamModel.name);
+                      SpCore.delBoolAfk();
+                      SpCore.delStartAfk();
+                    }),
                 SizedBox(height: AppSpace.def),
                 Padding(
                   padding: EdgeInsets.only(left: AppSpace.sm),
@@ -136,7 +152,7 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
             widget.streamModel.name,
             StreamsDB.getLivedStreams(),
           );
-          SpCore.delStartAfk();
+
           RouterCore.push(MainView.name);
           return false;
         },

@@ -12,7 +12,6 @@ class GroupOfButtons extends StatefulWidget {
     Key? key,
     required this.highlightList,
     required this.callback,
-    required this.startDateTime,
     required this.highlightCallback,
     required this.afkCallBack,
     required this.addStreamCallBack,
@@ -20,11 +19,10 @@ class GroupOfButtons extends StatefulWidget {
   }) : super(key: key);
   final List<HighlightModel> highlightList;
   final void Function() callback;
-  final DateTime startDateTime;
+
   final void Function() highlightCallback;
   final void Function() afkCallBack;
   final void Function() addStreamCallBack;
-
   bool isAfk;
 
   @override
@@ -32,8 +30,6 @@ class GroupOfButtons extends StatefulWidget {
 }
 
 class _GroupOfButtonsState extends State<GroupOfButtons> {
-  bool isAfk = false;
-  Duration startDateTime = DateTime.now().difference(DateTime.now());
   @override
   Widget build(BuildContext context) {
     return Column(
