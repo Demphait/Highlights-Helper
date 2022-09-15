@@ -77,6 +77,13 @@ class _MainViewState extends State<MainView> {
                                             highlights: [],
                                           ),
                                         );
+                                        _cubit.addLiveStream(
+                                          timeStartStream: DateTime.now(),
+                                          highlights: [],
+                                          title: textEditingController.text,
+                                          streamModel:
+                                              StreamsDB.getLivedStreams(),
+                                        );
                                       } else {
                                         RouterCore.pop();
                                         ScaffoldMessenger.of(context)

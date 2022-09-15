@@ -79,10 +79,10 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
                 splashRadius: 18,
                 onPressed: () async {
                   _streamCubit.addLiveStream(
-                    startStream,
-                    widget.streamModel.highlights,
-                    widget.streamModel.name,
-                    StreamsDB.getLivedStreams(),
+                    timeStartStream: startStream,
+                    highlights: widget.streamModel.highlights,
+                    title: widget.streamModel.name,
+                    streamModel: StreamsDB.getLivedStreams(),
                   );
 
                   RouterCore.push(MainView.name);
@@ -106,20 +106,20 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
                     highlightCallback: () {
                       _cubit.addHighlightMoment(startStream, highlightList);
                       _streamCubit.addLiveStream(
-                        startStream,
-                        widget.streamModel.highlights,
-                        widget.streamModel.name,
-                        StreamsDB.getLivedStreams(),
+                        timeStartStream: startStream,
+                        highlights: widget.streamModel.highlights,
+                        title: widget.streamModel.name,
+                        streamModel: StreamsDB.getLivedStreams(),
                       );
                     },
                     isAfk: isAfk,
                     afkCallBack: () {
                       _cubit.addAfk(startStream, highlightList, isAfk);
                       _streamCubit.addLiveStream(
-                        startStream,
-                        widget.streamModel.highlights,
-                        widget.streamModel.name,
-                        StreamsDB.getLivedStreams(),
+                        timeStartStream: startStream,
+                        highlights: widget.streamModel.highlights,
+                        title: widget.streamModel.name,
+                        streamModel: StreamsDB.getLivedStreams(),
                       );
                     },
                     addStreamCallBack: () {
@@ -147,10 +147,10 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
         ),
         onWillPop: () async {
           _streamCubit.addLiveStream(
-            startStream,
-            widget.streamModel.highlights,
-            widget.streamModel.name,
-            StreamsDB.getLivedStreams(),
+            timeStartStream: startStream,
+            highlights: widget.streamModel.highlights,
+            title: widget.streamModel.name,
+            streamModel: StreamsDB.getLivedStreams(),
           );
 
           RouterCore.push(MainView.name);
