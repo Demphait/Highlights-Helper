@@ -65,7 +65,7 @@ class _PastStreamViewState extends State<PastStreamView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: AppSpace.xlg),
+                SizedBox(height: AppSpace.def),
                 Center(
                   child: Text(
                     durationStream,

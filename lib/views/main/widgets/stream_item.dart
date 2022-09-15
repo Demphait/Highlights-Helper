@@ -26,9 +26,11 @@ class StreamItem extends StatelessWidget {
         children: [
           SlidableAction(
             onPressed: (context) => showMaterialDialog(
+                confirmText: 'Remove',
                 context: context,
-                title:
-                    'Do you want to remove the stream - ${streamModel.name}?',
+                title: 'Remove the stream?',
+                contentText:
+                    'Do you want to remove the stream - \'${streamModel.name}\' ?',
                 callbackYes: () {
                   deleteStream();
                   RouterCore.pop();
@@ -46,8 +48,11 @@ class StreamItem extends StatelessWidget {
         children: [
           SlidableAction(
             onPressed: (context) => showMaterialDialog(
+                confirmText: 'Remove',
                 context: context,
-                title: 'Do you want to remove the stream ${streamModel.name}?',
+                title: 'Remove the stream?',
+                contentText:
+                    'Do you want to remove the stream - \'${streamModel.name}\' ?',
                 callbackYes: () {
                   deleteStream();
                   RouterCore.pop();

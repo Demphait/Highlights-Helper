@@ -70,8 +70,10 @@ class _GroupOfButtonsState extends State<GroupOfButtons> {
         ElevatedButton(
           onPressed: () {
             showMaterialDialog(
+                confirmText: 'End',
                 context: context,
-                title: 'Do you really want to end the stream?',
+                title: 'End the stream?',
+                contentText: 'Do you really want to end the stream?',
                 callbackYes: () {
                   widget.addStreamCallBack();
                   RouterCore.push(MainView.name);

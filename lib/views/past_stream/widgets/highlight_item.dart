@@ -26,9 +26,11 @@ class HighlightItem extends StatelessWidget {
         children: [
           SlidableAction(
             onPressed: (context) => showMaterialDialog(
+                confirmText: 'Remove',
                 context: context,
-                title:
-                    'Do you want to remove the highlight ${highlightModel.time}?',
+                title: 'Remove the highlight?',
+                contentText:
+                    'Do you want to remove the highlight - ${highlightModel.time}?',
                 callbackYes: () {
                   deleteHighlight();
                   RouterCore.pop();
@@ -45,8 +47,10 @@ class HighlightItem extends StatelessWidget {
         children: [
           SlidableAction(
             onPressed: (context) => showMaterialDialog(
+                confirmText: 'Remove',
                 context: context,
-                title:
+                title: 'Remove the highlight?',
+                contentText:
                     'Do you want to remove the highlight - ${highlightModel.time}?',
                 callbackYes: () {
                   deleteHighlight();
