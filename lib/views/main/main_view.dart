@@ -31,6 +31,7 @@ class _MainViewState extends State<MainView> {
   final StreamCubit _cubit = StreamCubit();
   final TextEditingController textEditingController = TextEditingController();
   final liveStream = StreamsDB.getLivedStreams();
+  final RegExp regExp = RegExp(r'.*[^ ].*');
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,9 @@ class _MainViewState extends State<MainView> {
                                     controller: textEditingController,
                                     callbackYes: () {
                                       if (textEditingController
-                                          .text.isNotEmpty) {
+                                              .text.isNotEmpty &&
+                                          regExp.hasMatch(
+                                              textEditingController.text)) {
                                         RouterCore.push(
                                           CurrentStreamView.name,
                                           argument: StreamModel(
