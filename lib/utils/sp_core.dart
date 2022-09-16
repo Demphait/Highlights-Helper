@@ -18,4 +18,16 @@ abstract class SpCore {
   static Future<void> delStartAfk() async {
     await _prefs.remove('startAfk');
   }
+
+  static Future<void> setBoolAfk(bool? boolAfk) async {
+    await _prefs.setBool('boolAfk', boolAfk ?? false);
+  }
+
+  static bool getBoolAfk() {
+    return _prefs.getBool('boolAfk') ?? false;
+  }
+
+  static Future<void> delBoolAfk() async {
+    await _prefs.remove('boolAfk');
+  }
 }

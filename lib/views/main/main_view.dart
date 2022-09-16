@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:single_house/app/router/index.dart';
+import 'package:single_house/db/streams_db.dart';
 import 'package:single_house/models/stream_model.dart';
 import 'package:single_house/styles/app_colors.dart';
 import 'package:single_house/styles/app_space.dart';
@@ -29,6 +30,8 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   final StreamCubit _cubit = StreamCubit();
   final TextEditingController textEditingController = TextEditingController();
+  final liveStream = StreamsDB.getLivedStreams();
+  final RegExp regExp = RegExp(r'.*[^ ].*');
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +47,8 @@ class _MainViewState extends State<MainView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: AppSpace.smd),
+                    padding: EdgeInsets.symmetric(
+                        vertical: AppSpace.smd, horizontal: AppSpace.md),
                     child: Row(
                       children: [
                         Text(
@@ -52,53 +56,71 @@ class _MainViewState extends State<MainView> {
                           style: AppTextStyles.regular.white,
                         ),
                         const Spacer(),
-                        IconButton(
-                          splashRadius: 18,
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                          onPressed: () {
-                            showTextField(
-                              context: context,
-                              title: 'Введіть назву стріма',
-                              controller: textEditingController,
-                              callbackYes: () {
-                                if (textEditingController.text.isNotEmpty) {
-                                  RouterCore.push(
-                                    CurrentStreamView.name,
-                                    argument: StreamModel(
-                                      name: textEditingController.text,
-                                      date: DateTime.now().toString(),
-                                      time: DateTime.now().toString(),
-                                      highlights: [],
-                                    ),
+                        liveStream == null
+                            ? IconButton(
+                                splashRadius: 18,
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                onPressed: () {
+                                  showTextField(
+                                    context: context,
+                                    title: 'Enter a stream name',
+                                    controller: textEditingController,
+                                    callbackYes: () {
+                                      if (textEditingController
+                                              .text.isNotEmpty &&
+                                          regExp.hasMatch(
+                                              textEditingController.text)) {
+                                        RouterCore.push(
+                                          CurrentStreamView.name,
+                                          argument: StreamModel(
+                                            name: textEditingController.text,
+                                            date: DateTime.now().toString(),
+                                            time: DateTime.now().toString(),
+                                            highlights: [],
+                                          ),
+                                        );
+                                        _cubit.addLiveStream(
+                                          timeStartStream: DateTime.now(),
+                                          highlights: [],
+                                          title: textEditingController.text,
+                                          streamModel:
+                                              StreamsDB.getLivedStreams(),
+                                        );
+                                      } else {
+                                        RouterCore.pop();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: const Text(
+                                              'Enter a stream name',
+                                            ),
+                                            backgroundColor: AppColors.red,
+                                          ),
+                                        );
+                                      }
+                                    },
                                   );
-                                } else {
-                                  RouterCore.pop();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content:
-                                          const Text('Введіть назву стріма'),
-                                      backgroundColor: AppColors.red,
-                                    ),
-                                  );
-                                }
-                              },
-                            );
-                          },
-                          icon: const Icon(Icons.add),
-                          color: AppColors.white,
-                          iconSize: 28,
-                        ),
+                                },
+                                icon: const Icon(Icons.add),
+                                color: AppColors.white,
+                                iconSize: 28,
+                              )
+                            : const SizedBox(height: 0),
                       ],
                     ),
                   ),
-                  StreamItemLive(startDateTime: DateTime.now()),
+                  liveStream != null
+                      ? StreamItemLive(
+                          streamModel: liveStream!,
+                        )
+                      : const SizedBox(height: 0),
                   SizedBox(height: AppSpace.md),
                   BlocBuilder<StreamCubit, StreamState>(
                     builder: (context, state) {
                       return LoadingWrapper(
                         isLoading: state.status == StreamStatus.loading,
-                        child: _buildStreams(state, _cubit),
+                        child: _buildStreams(state, _cubit, context),
                       );
                     },
                   ),
@@ -112,12 +134,16 @@ class _MainViewState extends State<MainView> {
   }
 }
 
-Widget _buildStreams(StreamState state, StreamCubit cubit) {
+Widget _buildStreams(
+    StreamState state, StreamCubit cubit, BuildContext context) {
   if (state.status != StreamStatus.loading && state.streams.isEmpty) {
     return Center(
-        child: Text(
-      'Streams are not found',
-      style: TextStyle(color: AppColors.white, fontSize: 18),
+        child: Padding(
+      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 3),
+      child: Text(
+        'Streams not found',
+        style: TextStyle(color: AppColors.white, fontSize: 18),
+      ),
     ));
   }
   return ListView.builder(

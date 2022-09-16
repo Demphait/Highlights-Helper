@@ -26,9 +26,11 @@ class HighlightItem extends StatelessWidget {
         children: [
           SlidableAction(
             onPressed: (context) => showMaterialDialog(
+                confirmText: 'Remove',
                 context: context,
-                title:
-                    'Ви дійсно хочете видалити помітку ${highlightModel.time}?',
+                title: 'Remove the highlight?',
+                contentText:
+                    'Do you want to remove the highlight - ${highlightModel.time}?',
                 callbackYes: () {
                   deleteHighlight();
                   RouterCore.pop();
@@ -36,7 +38,6 @@ class HighlightItem extends StatelessWidget {
             backgroundColor: AppColors.red,
             foregroundColor: Colors.white,
             icon: Icons.delete,
-            // label: 'Delete',
             borderRadius: BorderRadius.circular(10),
           ),
         ],
@@ -46,9 +47,11 @@ class HighlightItem extends StatelessWidget {
         children: [
           SlidableAction(
             onPressed: (context) => showMaterialDialog(
+                confirmText: 'Remove',
                 context: context,
-                title:
-                    'Ви дійсно хочете видалити помітку ${highlightModel.time}?',
+                title: 'Remove the highlight?',
+                contentText:
+                    'Do you want to remove the highlight - ${highlightModel.time}?',
                 callbackYes: () {
                   deleteHighlight();
                   RouterCore.pop();
@@ -56,7 +59,6 @@ class HighlightItem extends StatelessWidget {
             backgroundColor: AppColors.red,
             foregroundColor: Colors.white,
             icon: Icons.delete,
-            // label: 'Delete',
             borderRadius: BorderRadius.circular(10),
           ),
         ],
@@ -74,7 +76,7 @@ class HighlightItem extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                highlightModel.isAfk ? 'AFK' : 'Крутий момент',
+                highlightModel.isAfk ? 'AFK' : 'Highlight moment',
                 style: AppTextStyles.medium.white,
               ),
               const Spacer(),

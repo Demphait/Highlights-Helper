@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:single_house/app/router/router_core.dart';
 import 'package:single_house/db/streams_db.dart';
+import 'package:single_house/models/stream_model.dart';
 import 'package:single_house/styles/app_colors.dart';
 import 'package:single_house/styles/app_space.dart';
 import 'package:single_house/styles/app_text_styles.dart';
-import 'package:single_house/utils/duration_format.dart';
 import 'package:single_house/views/current_stream/current_stream_view.dart';
 import 'package:single_house/widgets/box_text.dart';
+import 'package:single_house/widgets/timer.dart';
 
 class StreamItemLive extends StatefulWidget {
   const StreamItemLive({
     Key? key,
-    required this.startDateTime,
+    required this.streamModel,
   }) : super(key: key);
 
-  final DateTime startDateTime;
+  final StreamModel streamModel;
 
   @override
   State<StreamItemLive> createState() => _StreamItemLiveState();
@@ -22,6 +24,8 @@ class StreamItemLive extends StatefulWidget {
 
 class _StreamItemLiveState extends State<StreamItemLive> {
   final streams = StreamsDB.getStreams();
+  DateTime get startDateTime =>
+      DateFormat("yyyy-MM-dd hh:mm:ss").parse(widget.streamModel.time);
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +49,9 @@ class _StreamItemLiveState extends State<StreamItemLive> {
                 children: [
                   Row(
                     children: [
-                      Text(
-                        DateTime.now().difference(widget.startDateTime).toHms(),
-                        style: AppTextStyles.large.white,
-                      ),
+                      TimerWidget(
+                          startDateTime: startDateTime,
+                          textStyle: AppTextStyles.large.white),
                       const Spacer(),
                       TextBox(
                           text: 'Streaming',
@@ -67,7 +70,7 @@ class _StreamItemLiveState extends State<StreamItemLive> {
                       ),
                       SizedBox(width: AppSpace.smd),
                       Text(
-                        'Stream ${streams.length + 1}',
+                        widget.streamModel.name,
                         style: AppTextStyles.mediumThin.white,
                       ),
                     ],
@@ -82,7 +85,7 @@ class _StreamItemLiveState extends State<StreamItemLive> {
               child: InkWell(
                 onTap: () {
                   RouterCore.push(CurrentStreamView.name,
-                      argument: DateTime.now());
+                      argument: widget.streamModel);
                 },
               ),
             ),

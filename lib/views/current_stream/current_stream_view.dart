@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:single_house/app/router/router_core.dart';
+import 'package:single_house/db/streams_db.dart';
 import 'package:single_house/models/highlight_model.dart';
 import 'package:single_house/models/stream_model.dart';
 import 'package:single_house/styles/app_colors.dart';
@@ -10,6 +12,7 @@ import 'package:single_house/utils/sp_core.dart';
 import 'package:single_house/views/current_stream/cubit/current_stream_cubit.dart';
 import 'package:single_house/views/current_stream/widgets/group_of_buttons.dart';
 import 'package:single_house/views/main/cubit/stream_cubit.dart';
+import 'package:single_house/views/main/main_view.dart';
 import 'package:single_house/widgets/timer.dart';
 import 'package:single_house/views/past_stream/widgets/highlight_item.dart';
 
@@ -30,19 +33,21 @@ class CurrentStreamView extends StatefulWidget {
 }
 
 class _CurrentStreamViewState extends State<CurrentStreamView> {
-  List<HighlightModel> highlightList = [];
+  List<HighlightModel> get highlightList => widget.streamModel.highlights;
   final CurrentStreamCubit _cubit = CurrentStreamCubit();
   final StreamCubit _streamCubit = StreamCubit();
+  String get streamTime => widget.streamModel.time;
+  DateTime get startStream => DateFormat("yy-MM-dd HH:mm:ss").parse(streamTime);
 
-  bool isAfk = false;
+  bool isAfk = SpCore.getBoolAfk();
 
   void callback() {
     isAfk = !isAfk;
+    SpCore.setBoolAfk(isAfk);
   }
 
   @override
   void dispose() {
-    SpCore.delStartAfk();
     super.dispose();
   }
 
@@ -53,7 +58,6 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime startDateTime = DateTime.now();
     return BlocProvider(
       create: (context) => _cubit,
       child: WillPopScope(
@@ -71,8 +75,13 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
             leading: IconButton(
                 splashRadius: 18,
                 onPressed: () async {
-                  RouterCore.pop();
-                  SpCore.delStartAfk();
+                  _streamCubit.addLiveStream(
+                    timeStartStream: startStream,
+                    highlights: widget.streamModel.highlights,
+                    title: widget.streamModel.name,
+                    streamModel: StreamsDB.getLivedStreams(),
+                  );
+                  RouterCore.push(MainView.name);
                 },
                 icon: const Icon(Icons.arrow_back)),
           ),
@@ -83,27 +92,43 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
               children: [
                 SizedBox(height: AppSpace.xlg),
                 TimerWidget(
-                  startDateTime: DateTime.now(),
+                  startDateTime: startStream,
                   textStyle: AppTextStyles.veryLarge.white,
                 ),
                 SizedBox(height: AppSpace.def),
                 GroupOfButtons(
-                  highlightList: highlightList,
-                  callback: callback,
-                  startDateTime: startDateTime,
-                  highlightCallback: () =>
-                      _cubit.addHighlightMoment(startDateTime, highlightList),
-                  isAfk: isAfk,
-                  afkCallBack: () =>
-                      _cubit.addAfk(startDateTime, highlightList, isAfk),
-                  addStreamCallBack: () => _streamCubit.addStream(
-                      startDateTime, highlightList, widget.streamModel.name),
-                ),
+                    highlightList: highlightList,
+                    callback: callback,
+                    highlightCallback: () {
+                      _cubit.addHighlightMoment(startStream, highlightList);
+                      _streamCubit.addLiveStream(
+                        timeStartStream: startStream,
+                        highlights: widget.streamModel.highlights,
+                        title: widget.streamModel.name,
+                        streamModel: StreamsDB.getLivedStreams(),
+                      );
+                    },
+                    isAfk: isAfk,
+                    afkCallBack: () {
+                      _cubit.addAfk(startStream, highlightList, isAfk);
+                      _streamCubit.addLiveStream(
+                        timeStartStream: startStream,
+                        highlights: widget.streamModel.highlights,
+                        title: widget.streamModel.name,
+                        streamModel: StreamsDB.getLivedStreams(),
+                      );
+                    },
+                    addStreamCallBack: () {
+                      _streamCubit.addStream(
+                          startStream, highlightList, widget.streamModel.name);
+                      SpCore.delBoolAfk();
+                      SpCore.delStartAfk();
+                    }),
                 SizedBox(height: AppSpace.def),
                 Padding(
                   padding: EdgeInsets.only(left: AppSpace.sm),
                   child: Text(
-                    'Помітки',
+                    'Highlights:',
                     style: AppTextStyles.middle.white,
                   ),
                 ),
@@ -117,8 +142,14 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
           ),
         ),
         onWillPop: () async {
-          SpCore.delStartAfk();
-          return true;
+          _streamCubit.addLiveStream(
+            timeStartStream: startStream,
+            highlights: widget.streamModel.highlights,
+            title: widget.streamModel.name,
+            streamModel: StreamsDB.getLivedStreams(),
+          );
+          RouterCore.push(MainView.name);
+          return false;
         },
       ),
     );

@@ -8,5 +8,6 @@ abstract class DBCore {
     Hive.registerAdapter(StreamModelAdapter());
     Hive.registerAdapter(HighlightModelAdapter());
     await Hive.openBox<StreamModel>('streams');
+    await Hive.openBox<StreamModel>('liveStream');
   }
 }
