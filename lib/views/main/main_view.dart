@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:single_house/app/router/index.dart';
+import 'package:single_house/models/stream_model.dart';
 import 'package:single_house/styles/app_colors.dart';
 import 'package:single_house/styles/app_space.dart';
 import 'package:single_house/styles/app_text_styles.dart';
@@ -8,6 +9,7 @@ import 'package:single_house/views/current_stream/current_stream_view.dart';
 import 'package:single_house/views/main/cubit/stream_cubit.dart';
 import 'package:single_house/views/main/widgets/stream_item.dart';
 import 'package:single_house/views/main/widgets/stream_item_live.dart';
+import 'package:single_house/widgets/dialog.dart';
 import 'package:single_house/widgets/loading_wrapper.dart';
 
 class MainView extends StatefulWidget {
@@ -26,6 +28,7 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   final StreamCubit _cubit = StreamCubit();
+  final TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +39,7 @@ class _MainViewState extends State<MainView> {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSpace.md),
+              padding: EdgeInsets.symmetric(horizontal: AppSpace.sm),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -50,12 +53,37 @@ class _MainViewState extends State<MainView> {
                         ),
                         const Spacer(),
                         IconButton(
-                          splashRadius: 20,
+                          splashRadius: 18,
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           onPressed: () {
-                            RouterCore.push(CurrentStreamView.name,
-                                argument: DateTime.now());
+                            showTextField(
+                              context: context,
+                              title: 'Введіть назву стріма',
+                              controller: textEditingController,
+                              callbackYes: () {
+                                if (textEditingController.text.isNotEmpty) {
+                                  RouterCore.push(
+                                    CurrentStreamView.name,
+                                    argument: StreamModel(
+                                      name: textEditingController.text,
+                                      date: DateTime.now().toString(),
+                                      time: DateTime.now().toString(),
+                                      highlights: [],
+                                    ),
+                                  );
+                                } else {
+                                  RouterCore.pop();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content:
+                                          const Text('Введіть назву стріма'),
+                                      backgroundColor: AppColors.red,
+                                    ),
+                                  );
+                                }
+                              },
+                            );
                           },
                           icon: const Icon(Icons.add),
                           color: AppColors.white,
@@ -70,7 +98,7 @@ class _MainViewState extends State<MainView> {
                     builder: (context, state) {
                       return LoadingWrapper(
                         isLoading: state.status == StreamStatus.loading,
-                        child: _buildChats(state),
+                        child: _buildStreams(state, _cubit),
                       );
                     },
                   ),
@@ -84,9 +112,13 @@ class _MainViewState extends State<MainView> {
   }
 }
 
-Widget _buildChats(StreamState state) {
+Widget _buildStreams(StreamState state, StreamCubit cubit) {
   if (state.status != StreamStatus.loading && state.streams.isEmpty) {
-    return const Center(child: Text('Streams are not found'));
+    return Center(
+        child: Text(
+      'Streams are not found',
+      style: TextStyle(color: AppColors.white, fontSize: 18),
+    ));
   }
   return ListView.builder(
     reverse: true,
@@ -98,6 +130,7 @@ Widget _buildChats(StreamState state) {
         children: [
           StreamItem(
             streamModel: state.streams[index],
+            deleteStream: () => cubit.deleteStream(index),
           ),
           SizedBox(height: AppSpace.md),
         ],

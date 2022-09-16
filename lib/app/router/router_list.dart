@@ -25,7 +25,7 @@ abstract class RouterList {
           return ExampleView.route();
         },
         CurrentStreamView.name: (arg) {
-          if (arg is DateTime) {
+          if (arg is StreamModel) {
             return CurrentStreamView.route(arg);
           }
           return ExampleView.route();

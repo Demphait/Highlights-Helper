@@ -5,6 +5,7 @@ import 'package:single_house/styles/app_button_styles.dart';
 import 'package:single_house/styles/app_colors.dart';
 import 'package:single_house/styles/app_space.dart';
 import 'package:single_house/views/main/main_view.dart';
+import 'package:single_house/widgets/dialog.dart';
 
 class GroupOfButtons extends StatefulWidget {
   GroupOfButtons({
@@ -40,6 +41,7 @@ class _GroupOfButtonsState extends State<GroupOfButtons> {
       children: [
         Row(
           children: [
+            SizedBox(width: AppSpace.sm),
             ElevatedButton(
               onPressed: () {
                 widget.highlightCallback();
@@ -69,37 +71,18 @@ class _GroupOfButtonsState extends State<GroupOfButtons> {
         SizedBox(height: AppSpace.md),
         ElevatedButton(
           onPressed: () {
-            _showMaterialDialog(context);
+            showMaterialDialog(
+                context: context,
+                title: 'Ви дійсно хочете закінчити стрім?',
+                callbackYes: () {
+                  widget.addStreamCallBack();
+                  RouterCore.push(MainView.name);
+                });
           },
           child: const Text('Закінчити стрім'),
           style: AppButtonStyles.primaryRedButton,
         ),
       ],
-    );
-  }
-
-  void _showMaterialDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Ви дійсно хочете закінчити стрім?'),
-          actions: <Widget>[
-            TextButton(
-                onPressed: () {
-                  RouterCore.pop();
-                },
-                child: const Text('Ні')),
-            TextButton(
-              onPressed: () {
-                widget.addStreamCallBack();
-                RouterCore.push(MainView.name);
-              },
-              child: const Text('Так'),
-            )
-          ],
-        );
-      },
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:single_house/db/streams_db.dart';
 import 'package:single_house/models/highlight_model.dart';
 import 'package:single_house/models/stream_model.dart';
 
@@ -8,6 +9,11 @@ class PastStreamCubit extends Cubit<PastStreamState> {
   PastStreamCubit() : super(PastStreamState());
 
   Future<void> loadingHighlights(StreamModel stream) async {
+    emit(state.copyWith(highlights: stream.highlights));
+  }
+
+  Future<void> deleteHighlight(StreamModel stream, int indexOfList) async {
+    StreamsDB.deleteHighlight(stream, indexOfList);
     emit(state.copyWith(highlights: stream.highlights));
   }
 

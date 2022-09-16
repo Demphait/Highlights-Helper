@@ -10,6 +10,7 @@ import 'package:single_house/utils/duration_format.dart';
 import 'package:single_house/views/past_stream/cubit/past_stream_cubit.dart';
 import 'package:single_house/views/past_stream/widgets/highlight_item.dart';
 import 'package:single_house/widgets/loading_wrapper.dart';
+import 'package:single_house/widgets/substring.dart';
 
 class PastStreamView extends StatefulWidget {
   static const String name = 'PastStreamView';
@@ -31,16 +32,6 @@ class PastStreamView extends StatefulWidget {
 class _PastStreamViewState extends State<PastStreamView> {
   final PastStreamCubit _cubit = PastStreamCubit();
 
-  String substring(String original, {required int start, int? end}) {
-    if (end == null) {
-      return original.substring(start);
-    }
-    if (original.length < end) {
-      return original.substring(start, original.length);
-    }
-    return original.substring(start, end);
-  }
-
   @override
   Widget build(BuildContext context) {
     String streamTime = widget.streamModel.time;
@@ -55,14 +46,22 @@ class _PastStreamViewState extends State<PastStreamView> {
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
+          leading: IconButton(
+              splashRadius: 18,
+              onPressed: () => RouterCore.pop(),
+              icon: const Icon(Icons.arrow_back)),
           backgroundColor: AppColors.background,
           elevation: 0,
           centerTitle: true,
-          title: Text(widget.streamModel.name),
+          title: Text(
+            widget.streamModel.name,
+            maxLines: 1,
+            overflow: TextOverflow.clip,
+          ),
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppSpace.md),
+            padding: EdgeInsets.symmetric(horizontal: AppSpace.sm),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -86,7 +85,8 @@ class _PastStreamViewState extends State<PastStreamView> {
                   builder: (context, state) {
                     return LoadingWrapper(
                       isLoading: state.status == PastStreamStatus.loading,
-                      child: buildHighligts(state),
+                      child: _buildHighligts(
+                          state, _cubit, widget.streamModel, context),
                     );
                   },
                 )
@@ -99,7 +99,18 @@ class _PastStreamViewState extends State<PastStreamView> {
   }
 }
 
-Widget buildHighligts(PastStreamState state) {
+Widget _buildHighligts(PastStreamState state, PastStreamCubit cubit,
+    StreamModel stream, BuildContext context) {
+  if (state.status != PastStreamStatus.loading && state.highlights.isEmpty) {
+    return Center(
+        child: Padding(
+      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 4),
+      child: Text(
+        'Highlights are not found',
+        style: TextStyle(color: AppColors.white, fontSize: 18),
+      ),
+    ));
+  }
   return ListView.builder(
     shrinkWrap: true,
     physics: const NeverScrollableScrollPhysics(),
@@ -109,6 +120,7 @@ Widget buildHighligts(PastStreamState state) {
         children: [
           HighlightItem(
             highlightModel: state.highlights[index],
+            deleteHighlight: () => cubit.deleteHighlight(stream, index),
           ),
           SizedBox(height: AppSpace.md),
         ],

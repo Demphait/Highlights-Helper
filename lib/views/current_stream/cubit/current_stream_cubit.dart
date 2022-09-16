@@ -16,6 +16,12 @@ class CurrentStreamCubit extends Cubit<HighlightModel> {
     emit(HighlightModel(time: time, isAfk: false));
   }
 
+  Future<void> deleteHighlight(
+      List<HighlightModel> highlightList, int index) async {
+    highlightList.removeAt(index);
+    emit(HighlightModel(time: '', isAfk: false));
+  }
+
   Future<void> addAfk(DateTime startDateTime,
       List<HighlightModel> highlightList, bool isAfk) async {
     Future<void> buildAfk(bool isAfk) async {
