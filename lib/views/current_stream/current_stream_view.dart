@@ -13,7 +13,6 @@ import 'package:single_house/views/current_stream/cubit/current_stream_cubit.dar
 import 'package:single_house/views/current_stream/widgets/group_of_buttons.dart';
 import 'package:single_house/views/main/cubit/stream_cubit.dart';
 import 'package:single_house/views/main/main_view.dart';
-import 'package:single_house/widgets/substring.dart';
 import 'package:single_house/widgets/timer.dart';
 import 'package:single_house/views/past_stream/widgets/highlight_item.dart';
 
@@ -37,6 +36,8 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
   List<HighlightModel> get highlightList => widget.streamModel.highlights;
   final CurrentStreamCubit _cubit = CurrentStreamCubit();
   final StreamCubit _streamCubit = StreamCubit();
+  String get streamTime => widget.streamModel.time;
+  DateTime get startStream => DateFormat("yy-MM-dd HH:mm:ss").parse(streamTime);
 
   bool isAfk = SpCore.getBoolAfk();
 
@@ -57,10 +58,6 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
 
   @override
   Widget build(BuildContext context) {
-    String streamTime = widget.streamModel.time;
-    String firstPart = substring(streamTime, start: 0);
-    DateTime startStream = DateFormat("yy-MM-dd HH:mm:ss").parse(firstPart);
-
     return BlocProvider(
       create: (context) => _cubit,
       child: WillPopScope(
@@ -84,7 +81,6 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
                     title: widget.streamModel.name,
                     streamModel: StreamsDB.getLivedStreams(),
                   );
-
                   RouterCore.push(MainView.name);
                 },
                 icon: const Icon(Icons.arrow_back)),
@@ -152,7 +148,6 @@ class _CurrentStreamViewState extends State<CurrentStreamView> {
             title: widget.streamModel.name,
             streamModel: StreamsDB.getLivedStreams(),
           );
-
           RouterCore.push(MainView.name);
           return false;
         },

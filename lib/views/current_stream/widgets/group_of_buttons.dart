@@ -19,7 +19,6 @@ class GroupOfButtons extends StatefulWidget {
   }) : super(key: key);
   final List<HighlightModel> highlightList;
   final void Function() callback;
-
   final void Function() highlightCallback;
   final void Function() afkCallBack;
   final void Function() addStreamCallBack;

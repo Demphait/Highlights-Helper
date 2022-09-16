@@ -35,7 +35,7 @@ class _ExampleViewState extends State<ExampleView> {
           Text('ExampleView'.t),
           AppSpaceBox.md,
           InkWell(
-            child: AppLoader(),
+            child: const AppLoader(),
             onTap: () {
               RouterCore.push(ExampleView.name);
             },

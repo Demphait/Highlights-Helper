@@ -18,7 +18,7 @@ class LoadingWrapper extends StatelessWidget {
         child,
         if (isLoading)
           Container(
-            child: AppLoader(),
+            child: const AppLoader(),
             color: AppColors.black.withOpacity(0.2),
           ),
       ],
