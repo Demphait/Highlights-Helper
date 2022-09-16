@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.invalid_studio.single_house">
    <application
-        android:label="single_house"
+        android:label="Highlight Helper"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
