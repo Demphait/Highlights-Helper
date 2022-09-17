@@ -32,12 +32,12 @@ class _GroupOfButtonsState extends State<GroupOfButtons> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      // padding: EdgeInsets.symmetric(horizontal: AppSpace.sm),
       padding: EdgeInsets.symmetric(horizontal: AppSpace.sm),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ElevatedButton(
                 onPressed: () {
@@ -47,7 +47,6 @@ class _GroupOfButtonsState extends State<GroupOfButtons> {
                 style:
                     AppButtonStyles.secondaryButton(AppColors.purple, context),
               ),
-              SizedBox(width: MediaQuery.of(context).size.width * 0.033),
               ElevatedButton(
                 onPressed: () {
                   setState(() {
