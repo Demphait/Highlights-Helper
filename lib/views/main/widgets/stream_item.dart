@@ -84,12 +84,12 @@ class StreamItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 280,
+                      width: MediaQuery.of(context).size.width * 0.72,
                       child: Text(
                         streamModel.name,
                         style: AppTextStyles.medium.white,
                         maxLines: 1,
-                        overflow: TextOverflow.clip,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     SizedBox(height: AppSpace.smd),
