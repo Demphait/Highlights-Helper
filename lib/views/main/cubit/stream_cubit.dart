@@ -20,8 +20,10 @@ class StreamCubit extends Cubit<StreamState> {
     final Duration durationStream = DateTime.now().difference(timeStartStream);
     final DateTime timeEndStream = timeStartStream.add(durationStream);
 
-    final String startStream = DateFormat('HH:mm:ss').format(timeStartStream);
-    final String endStream = DateFormat('HH:mm:ss').format(timeEndStream);
+    final String startStream =
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(timeStartStream);
+    final String endStream =
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(timeEndStream);
 
     StreamsDB.addStream(
       StreamModel(

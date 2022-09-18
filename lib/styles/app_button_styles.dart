@@ -32,7 +32,9 @@ extension AppButtonStyles on ButtonStyle {
         textStyle:
             MaterialStateProperty.all<TextStyle>(AppTextStyles.medium.white),
         minimumSize: MaterialStateProperty.all<Size>(
-            Size(MediaQuery.of(context).size.width * 0.439, 36)),
+            Size(MediaQuery.of(context).size.width * 0.44, 36)),
+        maximumSize: MaterialStateProperty.all<Size>(
+            Size(MediaQuery.of(context).size.width * 0.44, 45)),
         backgroundColor: MaterialStateProperty.all<Color>(color),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
