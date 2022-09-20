@@ -21,6 +21,14 @@ class _AppState extends State<App> {
       navigatorKey: RouterCore.navigatorKey,
       onGenerateRoute: RouterList.onGenerateRoute,
       initialRoute: RouterList.defaultRoute,
+      builder: (context, child) {
+        final mediaQueryData = MediaQuery.of(context);
+        final scale = mediaQueryData.textScaleFactor.clamp(1.0, 1.3);
+        return MediaQuery(
+          child: child!,
+          data: MediaQuery.of(context).copyWith(textScaleFactor: scale),
+        );
+      },
     );
   }
 }

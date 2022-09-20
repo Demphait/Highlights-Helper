@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:single_house/app/router/index.dart';
 import 'package:single_house/db/streams_db.dart';
@@ -37,94 +38,100 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => _cubit..fetch(),
-      child: Scaffold(
-        backgroundColor: AppColors.background,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSpace.sm),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: AppSpace.smd, horizontal: AppSpace.md),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Streams',
-                          style: AppTextStyles.regular.white,
-                        ),
-                        const Spacer(),
-                        liveStream == null
-                            ? IconButton(
-                                splashRadius: 18,
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  showTextField(
-                                    context: context,
-                                    title: 'Enter a stream name',
-                                    controller: textEditingController,
-                                    callbackYes: () {
-                                      if (textEditingController
-                                              .text.isNotEmpty &&
-                                          regExp.hasMatch(
-                                              textEditingController.text)) {
-                                        RouterCore.push(
-                                          CurrentStreamView.name,
-                                          argument: StreamModel(
-                                            name: textEditingController.text,
-                                            date: DateTime.now().toString(),
-                                            time: DateTime.now().toString(),
-                                            highlights: [],
-                                          ),
-                                        );
-                                        _cubit.addLiveStream(
-                                          timeStartStream: DateTime.now(),
-                                          highlights: [],
-                                          title: textEditingController.text,
-                                          streamModel:
-                                              StreamsDB.getLivedStreams(),
-                                        );
-                                      } else {
-                                        RouterCore.pop();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: const Text(
-                                              'Enter a stream name',
+      child: WillPopScope(
+        onWillPop: () async {
+          SystemNavigator.pop();
+          return true;
+        },
+        child: Scaffold(
+          backgroundColor: AppColors.background,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppSpace.sm),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: AppSpace.smd, horizontal: AppSpace.md),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Streams',
+                            style: AppTextStyles.regular.white,
+                          ),
+                          const Spacer(),
+                          liveStream == null
+                              ? IconButton(
+                                  splashRadius: 18,
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  onPressed: () {
+                                    showTextField(
+                                      context: context,
+                                      title: 'Enter a stream name',
+                                      controller: textEditingController,
+                                      callbackYes: () {
+                                        if (textEditingController
+                                                .text.isNotEmpty &&
+                                            regExp.hasMatch(
+                                                textEditingController.text)) {
+                                          RouterCore.push(
+                                            CurrentStreamView.name,
+                                            argument: StreamModel(
+                                              name: textEditingController.text,
+                                              date: DateTime.now().toString(),
+                                              time: DateTime.now().toString(),
+                                              highlights: [],
                                             ),
-                                            backgroundColor: AppColors.red,
-                                          ),
-                                        );
-                                      }
-                                    },
-                                  );
-                                },
-                                icon: const Icon(Icons.add),
-                                color: AppColors.white,
-                                iconSize: 28,
-                              )
-                            : const SizedBox(height: 0),
-                      ],
+                                          );
+                                          _cubit.addLiveStream(
+                                            timeStartStream: DateTime.now(),
+                                            highlights: [],
+                                            title: textEditingController.text,
+                                            streamModel:
+                                                StreamsDB.getLivedStreams(),
+                                          );
+                                        } else {
+                                          RouterCore.pop();
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: const Text(
+                                                'Enter a stream name',
+                                              ),
+                                              backgroundColor: AppColors.red,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    );
+                                  },
+                                  icon: const Icon(Icons.add),
+                                  color: AppColors.white,
+                                  iconSize: 28,
+                                )
+                              : const SizedBox(height: 0),
+                        ],
+                      ),
                     ),
-                  ),
-                  liveStream != null
-                      ? StreamItemLive(
-                          streamModel: liveStream!,
-                        )
-                      : const SizedBox(height: 0),
-                  SizedBox(height: AppSpace.md),
-                  BlocBuilder<StreamCubit, StreamState>(
-                    builder: (context, state) {
-                      return LoadingWrapper(
-                        isLoading: state.status == StreamStatus.loading,
-                        child: _buildStreams(state, _cubit, context),
-                      );
-                    },
-                  ),
-                ],
+                    liveStream != null
+                        ? StreamItemLive(
+                            streamModel: liveStream!,
+                          )
+                        : const SizedBox(height: 0),
+                    SizedBox(height: AppSpace.md),
+                    BlocBuilder<StreamCubit, StreamState>(
+                      builder: (context, state) {
+                        return LoadingWrapper(
+                          isLoading: state.status == StreamStatus.loading,
+                          child: _buildStreams(state, _cubit, context),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
