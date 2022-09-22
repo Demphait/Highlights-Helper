@@ -41,11 +41,8 @@ class _AppPassFieldState extends State<AppPassField> {
           controller: widget.controller,
           validator: widget.validator,
           textInputAction: widget.textInputAction,
-        ),
-        Positioned(
-          right: 10,
-          top: 30,
-          child: IconButton(
+          iconSuffix: IconButton(
+            padding: EdgeInsets.zero,
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onPressed: () {

@@ -12,6 +12,11 @@ extension AppTextStyles on TextStyle {
         fontSize: 20,
         fontFamily: 'Rubik',
       );
+  static TextStyle get middleThin => const TextStyle(
+        fontWeight: FontWeight.w400,
+        fontSize: 20,
+        fontFamily: 'Rubik',
+      );
   static TextStyle get medium => const TextStyle(
         fontWeight: FontWeight.w500,
         fontSize: 14,
@@ -20,6 +25,11 @@ extension AppTextStyles on TextStyle {
   static TextStyle get secondary => const TextStyle(
         fontWeight: FontWeight.w400,
         fontSize: 12,
+        fontFamily: 'Rubik',
+      );
+  static TextStyle get inputText => const TextStyle(
+        fontWeight: FontWeight.w400,
+        fontSize: 16,
         fontFamily: 'Rubik',
       );
   static TextStyle get mediumThin => const TextStyle(
@@ -43,4 +53,5 @@ extension AppTextStyles on TextStyle {
   TextStyle get primary => copyWith(color: AppColors.primary);
   TextStyle get grey => copyWith(color: AppColors.grey);
   TextStyle get pink => copyWith(color: AppColors.pink);
+  TextStyle get red => copyWith(color: AppColors.red);
 }

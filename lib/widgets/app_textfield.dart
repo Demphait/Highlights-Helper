@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:single_house/styles/app_colors.dart';
 import 'package:single_house/styles/app_space.dart';
 import 'package:single_house/styles/app_text_styles.dart';
@@ -14,16 +13,17 @@ class AppTextField extends StatefulWidget {
     this.textInputType = TextInputType.text,
     this.validator,
     this.onChanged,
+    this.iconSuffix,
   }) : super(key: key);
 
   final String name;
-
   final bool obscureText;
   final TextInputAction textInputAction;
   final TextEditingController? controller;
   final TextInputType textInputType;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
+  final Widget? iconSuffix;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -49,7 +49,7 @@ class _AppTextFieldState extends State<AppTextField> {
                 widget.name.toUpperCase(),
                 style: AppTextStyles.mediumThin.grey,
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: AppSpace.sm),
               TextFormField(
                 style: AppTextStyles.inputText.white,
                 keyboardType: widget.textInputType,
@@ -70,11 +70,12 @@ class _AppTextFieldState extends State<AppTextField> {
                   }
                 },
                 decoration: InputDecoration(
+                  suffixIcon: widget.iconSuffix,
                   filled: true,
                   fillColor: AppColors.mediumGrey,
                   isCollapsed: true,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  contentPadding: EdgeInsets.symmetric(
+                      horizontal: AppSpace.smd, vertical: AppSpace.smd),
                   errorStyle: const TextStyle(height: 0, fontSize: 0),
                   labelStyle: AppTextStyles.mediumThin.grey,
                   enabledBorder: OutlineInputBorder(

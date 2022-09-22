@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:single_house/app/router/router_core.dart';
 import 'package:single_house/styles/app_colors.dart';
-import 'package:single_house/widgets/app_text_field.dart';
+import 'package:single_house/widgets/input_textfield.dart';
 import 'package:single_house/styles/app_text_styles.dart';
 
 void showMaterialDialog({
@@ -63,7 +63,7 @@ void showTextField({
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            AppTextField(controller: controller),
+            InputTextField(controller: controller),
           ],
         ),
         actions: <Widget>[
