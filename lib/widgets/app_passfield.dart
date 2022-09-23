@@ -10,13 +10,12 @@ class AppPassField extends StatefulWidget {
     this.textInputAction = TextInputAction.next,
     required this.controller,
     required this.name,
-    required this.icon,
   }) : super(key: key);
   final bool isHide;
   final TextEditingController controller;
   final String? Function(String?)? validator;
   final String name;
-  final String icon;
+
   final TextInputAction textInputAction;
 
   @override

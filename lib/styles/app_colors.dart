@@ -12,4 +12,5 @@ abstract class AppColors {
   static Color get red => const Color(0xFFE51937);
   static Color get purple => const Color(0xFF1B143F);
   static Color get mediumGrey => const Color(0xFF343341);
+  static Color get lightGrey => Colors.grey.shade600;
 }

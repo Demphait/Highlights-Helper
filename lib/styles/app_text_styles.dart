@@ -52,6 +52,7 @@ extension AppTextStyles on TextStyle {
   TextStyle get white => copyWith(color: AppColors.white);
   TextStyle get primary => copyWith(color: AppColors.primary);
   TextStyle get grey => copyWith(color: AppColors.grey);
+  TextStyle get lightGrey => copyWith(color: AppColors.lightGrey);
   TextStyle get pink => copyWith(color: AppColors.pink);
   TextStyle get red => copyWith(color: AppColors.red);
 }
