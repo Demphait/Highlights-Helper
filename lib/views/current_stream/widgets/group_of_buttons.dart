@@ -31,53 +31,56 @@ class GroupOfButtons extends StatefulWidget {
 class _GroupOfButtonsState extends State<GroupOfButtons> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          children: [
-            SizedBox(width: AppSpace.sm),
-            ElevatedButton(
-              onPressed: () {
-                widget.highlightCallback();
-              },
-              child: const Text('Highlight moment'),
-              style: AppButtonStyles.secondaryButton(AppColors.purple),
-            ),
-            SizedBox(width: AppSpace.smd),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  widget.isAfk = !widget.isAfk;
-                  widget.callback();
-                });
-
-                widget.afkCallBack();
-              },
-              child: widget.isAfk ? const Text('Come Back') : const Text('AFK'),
-              style: AppButtonStyles.secondaryButton(
-                widget.isAfk ? AppColors.green : AppColors.purple,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: AppSpace.sm),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  widget.highlightCallback();
+                },
+                child: const Text('Highlight moment'),
+                style:
+                    AppButtonStyles.secondaryButton(AppColors.purple, context),
               ),
-            ),
-          ],
-        ),
-        SizedBox(height: AppSpace.md),
-        ElevatedButton(
-          onPressed: () {
-            showMaterialDialog(
-                confirmText: 'End',
-                context: context,
-                title: 'End the stream?',
-                contentText: 'Do you really want to end the stream?',
-                callbackYes: () {
-                  widget.addStreamCallBack();
-                  RouterCore.push(MainView.name);
-                });
-          },
-          child: const Text('End stream'),
-          style: AppButtonStyles.primaryRedButton,
-        ),
-      ],
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    widget.isAfk = !widget.isAfk;
+                    widget.callback();
+                  });
+
+                  widget.afkCallBack();
+                },
+                child:
+                    widget.isAfk ? const Text('Come Back') : const Text('AFK'),
+                style: AppButtonStyles.secondaryButton(
+                    widget.isAfk ? AppColors.green : AppColors.purple, context),
+              ),
+            ],
+          ),
+          SizedBox(height: AppSpace.md),
+          ElevatedButton(
+            onPressed: () {
+              showMaterialDialog(
+                  confirmText: 'End',
+                  context: context,
+                  title: 'End the stream?',
+                  contentText: 'Do you really want to end the stream?',
+                  callbackYes: () {
+                    widget.addStreamCallBack();
+                    RouterCore.push(MainView.name);
+                  });
+            },
+            child: const Text('End stream'),
+            style: AppButtonStyles.primaryRedButton(context),
+          ),
+        ],
+      ),
     );
   }
 }

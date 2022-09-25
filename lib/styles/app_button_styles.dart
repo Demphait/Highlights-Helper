@@ -14,10 +14,11 @@ extension AppButtonStyles on ButtonStyle {
           ),
         ),
       );
-  static ButtonStyle get primaryRedButton => ButtonStyle(
+  static ButtonStyle primaryRedButton(BuildContext context) => ButtonStyle(
         textStyle:
             MaterialStateProperty.all<TextStyle>(AppTextStyles.medium.white),
-        minimumSize: MaterialStateProperty.all<Size>(const Size(360, 45)),
+        minimumSize: MaterialStateProperty.all<Size>(
+            Size(MediaQuery.of(context).size.width * 0.95, 45)),
         backgroundColor: MaterialStateProperty.all<Color>(AppColors.red),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
@@ -26,10 +27,14 @@ extension AppButtonStyles on ButtonStyle {
         ),
       );
 
-  static ButtonStyle secondaryButton(Color color) => ButtonStyle(
+  static ButtonStyle secondaryButton(Color color, BuildContext context) =>
+      ButtonStyle(
         textStyle:
             MaterialStateProperty.all<TextStyle>(AppTextStyles.medium.white),
-        minimumSize: MaterialStateProperty.all<Size>(const Size(173, 36)),
+        minimumSize: MaterialStateProperty.all<Size>(
+            Size(MediaQuery.of(context).size.width * 0.44, 36)),
+        maximumSize: MaterialStateProperty.all<Size>(
+            Size(MediaQuery.of(context).size.width * 0.44, 45)),
         backgroundColor: MaterialStateProperty.all<Color>(color),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:single_house/app/router/router_core.dart';
 import 'package:single_house/models/stream_model.dart';
 import 'package:single_house/styles/app_colors.dart';
@@ -7,6 +8,7 @@ import 'package:single_house/styles/app_text_styles.dart';
 import 'package:single_house/views/past_stream/past_stream_view.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:single_house/widgets/dialog.dart';
+import 'package:single_house/widgets/substring.dart';
 
 class StreamItem extends StatelessWidget {
   const StreamItem({
@@ -16,6 +18,24 @@ class StreamItem extends StatelessWidget {
   }) : super(key: key);
   final StreamModel streamModel;
   final void Function() deleteStream;
+
+  String getTime() {
+    try {
+      String streamTime = streamModel.time;
+      String firstPart = substring(streamTime, start: 0, end: 18);
+      String secondPart = substring(streamTime, start: 22);
+      DateTime firstPartDateTime =
+          DateFormat('yyyy-MM-dd HH:mm:ss').parse(firstPart);
+      DateTime secondPartDateTime =
+          DateFormat('yyyy-MM-dd HH:mm:ss').parse(secondPart);
+      String startStreamTime = DateFormat('HH:mm:ss').format(firstPartDateTime);
+      String endStreamTime = DateFormat('HH:mm:ss').format(secondPartDateTime);
+      String result = '$startStreamTime - $endStreamTime';
+      return result;
+    } catch (e) {
+      return streamModel.time;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,12 +104,12 @@ class StreamItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 280,
+                      width: MediaQuery.of(context).size.width * 0.72,
                       child: Text(
                         streamModel.name,
                         style: AppTextStyles.medium.white,
                         maxLines: 1,
-                        overflow: TextOverflow.clip,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     SizedBox(height: AppSpace.smd),
@@ -101,7 +121,9 @@ class StreamItem extends StatelessWidget {
                         ),
                         SizedBox(width: AppSpace.def),
                         Text(
-                          streamModel.time,
+                          // streamModel.time,
+                          // '$startStreamTime - $endStreamTime',
+                          getTime(),
                           style: AppTextStyles.secondary.grey,
                         ),
                       ],

@@ -46,6 +46,7 @@ class _StreamItemLiveState extends State<StreamItemLive> {
                   horizontal: AppSpace.def, vertical: AppSpace.md),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
@@ -58,7 +59,6 @@ class _StreamItemLiveState extends State<StreamItemLive> {
                           textStyle: AppTextStyles.secondary.pink),
                     ],
                   ),
-                  SizedBox(height: AppSpace.def),
                   Row(
                     children: [
                       SizedBox(
@@ -69,9 +69,14 @@ class _StreamItemLiveState extends State<StreamItemLive> {
                         width: AppSpace.smd,
                       ),
                       SizedBox(width: AppSpace.smd),
-                      Text(
-                        widget.streamModel.name,
-                        style: AppTextStyles.mediumThin.white,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        child: Text(
+                          widget.streamModel.name,
+                          style: AppTextStyles.mediumThin.white,
+                          overflow: TextOverflow.clip,
+                          maxLines: 1,
+                        ),
                       ),
                     ],
                   ),
