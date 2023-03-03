@@ -22,7 +22,7 @@ class StreamItem extends StatelessWidget {
   String getTime() {
     try {
       String streamTime = streamModel.time;
-      String firstPart = substring(streamTime, start: 0, end: 18);
+      String firstPart = substring(streamTime, start: 0, end: 19);
       String secondPart = substring(streamTime, start: 22);
       DateTime firstPartDateTime =
           DateFormat('yyyy-MM-dd HH:mm:ss').parse(firstPart);

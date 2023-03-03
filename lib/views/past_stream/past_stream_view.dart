@@ -35,25 +35,15 @@ class _PastStreamViewState extends State<PastStreamView> {
   @override
   Widget build(BuildContext context) {
     String getTime() {
-      try {
-        String streamTime = widget.streamModel.time;
-        String firstPart = substring(streamTime, start: 0, end: 18);
-        String secondPart = substring(streamTime, start: 22);
-        DateTime startStream =
-            DateFormat('yyyy-MM-dd HH:mm:ss').parse(firstPart);
-        DateTime endStream =
-            DateFormat('yyyy-MM-dd HH:mm:ss').parse(secondPart);
-        String durationStream = endStream.difference(startStream).toHms();
-        return durationStream;
-      } catch (e) {
-        String streamTime = widget.streamModel.time;
-        String firstPart = substring(streamTime, start: 0, end: 8);
-        String secondPart = substring(streamTime, start: 11, end: 19);
-        DateTime startStream = DateFormat("hh:mm:ss").parse(firstPart);
-        DateTime endStream = DateFormat("hh:mm:ss").parse(secondPart);
-        String durationStream = endStream.difference(startStream).toHms();
-        return durationStream;
-      }
+      String streamTime = widget.streamModel.time;
+      String firstPart = substring(streamTime, start: 0, end: 19);
+      String secondPart = substring(streamTime, start: 22);
+      DateTime startStream = DateFormat('yyyy-MM-dd HH:mm:ss').parse(firstPart);
+      print(startStream);
+      DateTime endStream = DateFormat('yyyy-MM-dd HH:mm:ss').parse(secondPart);
+      print(endStream);
+      String durationStream = endStream.difference(startStream).toHms();
+      return durationStream;
     }
 
     return BlocProvider(
